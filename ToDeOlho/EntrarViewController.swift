@@ -11,7 +11,7 @@ import Alamofire
 
 class EntrarViewController: UIViewController {
     
-    let URL_USER_LOGIN = "http://projetomds.herokuapp.com/app/login"
+    //let URL_USER_LOGIN =
     
     @IBOutlet weak var login: UITextField!
     @IBOutlet weak var senha: UITextField!
@@ -20,7 +20,7 @@ class EntrarViewController: UIViewController {
             
             let parametros: Parameters = ["email": login.text!, "password": senha.text!]
             
-            Alamofire.request(URL_USER_LOGIN, method: .post, parameters: parametros).responseJSON{
+        Alamofire.request(Config.loginURL, method: .post, parameters: parametros).responseJSON{
                 response in
                     print("Success: \(response.result.isSuccess)")
                 print("Response String: \(String(describing: response.result.value))")

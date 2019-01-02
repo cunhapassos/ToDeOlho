@@ -10,6 +10,7 @@
 		2F40A92C21DCD77400468CFC /* EntrarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A92921DCD77400468CFC /* EntrarViewController.swift */; };
 		2F40A92D21DCD77400468CFC /* CadastroTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A92A21DCD77400468CFC /* CadastroTableViewController.swift */; };
 		2F40A92E21DCD77400468CFC /* REST.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A92B21DCD77400468CFC /* REST.swift */; };
+		2F40A93521DCECCB00468CFC /* Constantes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A93421DCECCB00468CFC /* Constantes.swift */; };
 		2FEE1D0821DCC36700A0D170 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEE1D0721DCC36700A0D170 /* AppDelegate.swift */; };
 		2FEE1D0A21DCC36700A0D170 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEE1D0921DCC36700A0D170 /* ViewController.swift */; };
 		2FEE1D0D21DCC36700A0D170 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FEE1D0B21DCC36700A0D170 /* Main.storyboard */; };
@@ -101,6 +102,7 @@
 		2F40A92921DCD77400468CFC /* EntrarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntrarViewController.swift; sourceTree = "<group>"; };
 		2F40A92A21DCD77400468CFC /* CadastroTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CadastroTableViewController.swift; sourceTree = "<group>"; };
 		2F40A92B21DCD77400468CFC /* REST.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REST.swift; sourceTree = "<group>"; };
+		2F40A93421DCECCB00468CFC /* Constantes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constantes.swift; sourceTree = "<group>"; };
 		2FEE1D0421DCC36700A0D170 /* ToDeOlho.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDeOlho.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FEE1D0721DCC36700A0D170 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FEE1D0921DCC36700A0D170 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				2FEE1D0E21DCC36700A0D170 /* Assets.xcassets */,
 				2FEE1D1021DCC36700A0D170 /* LaunchScreen.storyboard */,
 				2FEE1D1321DCC36700A0D170 /* Info.plist */,
+				2F40A93421DCECCB00468CFC /* Constantes.swift */,
 			);
 			path = ToDeOlho;
 			sourceTree = "<group>";
@@ -339,6 +342,7 @@
 				2FEE1D1E21DCC3ED00A0D170 /* DenunciaViewController.swift in Sources */,
 				2FEE1D2121DCC3ED00A0D170 /* DenunciaTableViewController.swift in Sources */,
 				2F40A92E21DCD77400468CFC /* REST.swift in Sources */,
+				2F40A93521DCECCB00468CFC /* Constantes.swift in Sources */,
 				2F40A92D21DCD77400468CFC /* CadastroTableViewController.swift in Sources */,
 				2FEE1D0A21DCC36700A0D170 /* ViewController.swift in Sources */,
 				2FEE1D0821DCC36700A0D170 /* AppDelegate.swift in Sources */,

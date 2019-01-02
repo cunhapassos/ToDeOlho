@@ -15,8 +15,7 @@ class DenunciaTableViewController: UITableViewController{
     /* COLOCAR URL COMO UserDefaults.standard */
     //let URL_TPOS_DESORDEM = "http://localhost:3000/api/tipodedesordem"
     //let URL_ISERIR_DENUNCIA = "http://localhost:3000/api/denuncia/inserir"
-    let URL_TPOS_DESORDEM = "https://projetomds.herokuapp.com/api/tipodedesordem"
-    let URL_ISERIR_DENUNCIA = "https://projetomds.herokuapp.com/api/denuncia/inserir"
+
     @IBOutlet weak var descricaoTextView: UITextView!
     @IBOutlet weak var dataLabel: UILabel!
     @IBOutlet weak var horaLabel: UILabel!
@@ -72,7 +71,7 @@ class DenunciaTableViewController: UITableViewController{
         
         let parametros: Parameters = ["desordem": self.desordemTipoLabel.text!, "usuario": usuario!, "den_datahora_registro": hoje, "den_datahora_ocorreu": dataHora, "den_status": "Com problemas", "den_nivel_confiabilidade": "0", "den_local_latitude": self.localizacao.coordinate.latitude, "den_local_longitude": self.localizacao.coordinate.longitude, "den_descricao": self.descricaoTextView.text, "den_anonimato": "1"]
         
-        Alamofire.request(URL_ISERIR_DENUNCIA, method: .post, parameters: parametros).responseJSON{
+        Alamofire.request(Config.URL_ISERIR_DENUNCIA, method: .post, parameters: parametros).responseJSON{
             response in
             print("Success: \(response.result.isSuccess)")
             print("Response String: \(String(describing: response.result.value))")
@@ -105,7 +104,7 @@ class DenunciaTableViewController: UITableViewController{
     }
     
     func listarTiposDenuncia(){
-        Alamofire.request(URL_TPOS_DESORDEM, method: .post).responseJSON{
+        Alamofire.request(Config.URL_TPOS_DESORDEM, method: .post).responseJSON{
             response in
             
             if let result = response.result.value as? NSArray{

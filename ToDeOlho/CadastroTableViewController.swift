@@ -9,9 +9,9 @@
 import UIKit
 import Alamofire
 
+
 class CadastroTableViewController: UITableViewController {
 
-    let URL_USER_LOGIN = "https://projetomds.herokuapp.com/app/usuarios/insert"
     var datePickerIndexPath: IndexPath?
     var inputTexts: [String] = ["Nascimento"]
     var inputDates: [Date] = []
@@ -43,7 +43,7 @@ class CadastroTableViewController: UITableViewController {
                         
                         let parametros: Parameters = ["login": nomeUsuario, "senha": senha, "email": email, "nascimento": nascimento, "cpf": cpf,"nome": nome, "confia": confia, "tipo": tipo, "telefone": telefone]
                         
-                        Alamofire.request(URL_USER_LOGIN, method: .post, parameters: parametros).responseJSON{
+                        Alamofire.request(Config.inserirUsuarioURL, method: .post, parameters: parametros).responseJSON{
                             response in
                             let statusCode = response.response?.statusCode
                             print(statusCode) // the status code

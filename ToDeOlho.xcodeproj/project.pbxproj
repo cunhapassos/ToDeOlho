@@ -23,6 +23,7 @@
 		2FEE1E0221DCC94200A0D170 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FEE1DF521DCC93B00A0D170 /* Alamofire.framework */; };
 		2FEE1E0321DCC94200A0D170 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2FEE1DF521DCC93B00A0D170 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2FEE1E0F21DCCBA100A0D170 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FEE1E0E21DCCBA100A0D170 /* SWRevealViewController.m */; };
+		43CBFC4AF375A1D769627F40 /* Pods_ToDeOlho.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D5F206AE5D4F883B42D3380 /* Pods_ToDeOlho.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +100,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0D24FB3FC107F318EFE84077 /* Pods-ToDeOlho.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDeOlho.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ToDeOlho/Pods-ToDeOlho.debug.xcconfig"; sourceTree = "<group>"; };
+		1D5F206AE5D4F883B42D3380 /* Pods_ToDeOlho.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ToDeOlho.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F40A92921DCD77400468CFC /* EntrarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntrarViewController.swift; sourceTree = "<group>"; };
 		2F40A92A21DCD77400468CFC /* CadastroTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CadastroTableViewController.swift; sourceTree = "<group>"; };
 		2F40A92B21DCD77400468CFC /* REST.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REST.swift; sourceTree = "<group>"; };
@@ -118,6 +121,7 @@
 		2FEE1E0C21DCCBA000A0D170 /* ToDeOlho-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ToDeOlho-Bridging-Header.h"; sourceTree = "<group>"; };
 		2FEE1E0D21DCCBA100A0D170 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SWRevealViewController.h; path = "SWRevealViewController-master/SWRevealViewController/SWRevealViewController.h"; sourceTree = SOURCE_ROOT; };
 		2FEE1E0E21DCCBA100A0D170 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SWRevealViewController.m; path = "SWRevealViewController-master/SWRevealViewController/SWRevealViewController.m"; sourceTree = SOURCE_ROOT; };
+		5CBAADE2F549453D61763AA5 /* Pods-ToDeOlho.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDeOlho.release.xcconfig"; path = "Pods/Target Support Files/Pods-ToDeOlho/Pods-ToDeOlho.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +131,7 @@
 			files = (
 				2FEE1D6421DCC6C900A0D170 /* CoreLocation.framework in Frameworks */,
 				2FEE1E0221DCC94200A0D170 /* Alamofire.framework in Frameworks */,
+				43CBFC4AF375A1D769627F40 /* Pods_ToDeOlho.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,6 +144,7 @@
 				2FEE1D0621DCC36700A0D170 /* ToDeOlho */,
 				2FEE1D0521DCC36700A0D170 /* Products */,
 				2FEE1D2621DCC4BB00A0D170 /* Frameworks */,
+				CD2762EBD101BE39934F43F0 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -176,6 +182,7 @@
 			children = (
 				2FEE1DE921DCC93B00A0D170 /* Alamofire.xcodeproj */,
 				2FEE1D6321DCC6C900A0D170 /* CoreLocation.framework */,
+				1D5F206AE5D4F883B42D3380 /* Pods_ToDeOlho.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -204,6 +211,15 @@
 			path = SWRevealViewController;
 			sourceTree = "<group>";
 		};
+		CD2762EBD101BE39934F43F0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0D24FB3FC107F318EFE84077 /* Pods-ToDeOlho.debug.xcconfig */,
+				5CBAADE2F549453D61763AA5 /* Pods-ToDeOlho.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -211,6 +227,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FEE1D1621DCC36700A0D170 /* Build configuration list for PBXNativeTarget "ToDeOlho" */;
 			buildPhases = (
+				82D2757B0375BE04C6AC6578 /* [CP] Check Pods Manifest.lock */,
 				2FEE1D0021DCC36700A0D170 /* Sources */,
 				2FEE1D0121DCC36700A0D170 /* Frameworks */,
 				2FEE1D0221DCC36700A0D170 /* Resources */,
@@ -331,6 +348,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		82D2757B0375BE04C6AC6578 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ToDeOlho-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2FEE1D0021DCC36700A0D170 /* Sources */ = {
@@ -489,6 +527,7 @@
 		};
 		2FEE1D1721DCC36700A0D170 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0D24FB3FC107F318EFE84077 /* Pods-ToDeOlho.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -509,6 +548,7 @@
 		};
 		2FEE1D1821DCC36700A0D170 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5CBAADE2F549453D61763AA5 /* Pods-ToDeOlho.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

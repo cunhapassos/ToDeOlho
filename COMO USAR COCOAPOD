@@ -1,0 +1,7 @@
+COMO USAR COCOAPOD
+1 - Crie o arquivo Podfile dentro da pasta do projeto execute o comando: pod init
+2 - Acrescente a linha desejado no arquivo POdfile: exemplo: pod 'Simplicity'
+3 - Execute o comando: pod install para instalar as dependencias da linha acrescentada
+4 - Para entender melho olhe:
+	https://guides.cocoapods.org/using/using-cocoapods.html
+	https://www.youtube.com/watch?v=2NtWWGEAUBA

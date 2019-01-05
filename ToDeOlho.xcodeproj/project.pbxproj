@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		2F40A92C21DCD77400468CFC /* EntrarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A92921DCD77400468CFC /* EntrarViewController.swift */; };
 		2F40A92D21DCD77400468CFC /* CadastroTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A92A21DCD77400468CFC /* CadastroTableViewController.swift */; };
-		2F40A92E21DCD77400468CFC /* REST.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A92B21DCD77400468CFC /* REST.swift */; };
 		2F40A93521DCECCB00468CFC /* Constantes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A93421DCECCB00468CFC /* Constantes.swift */; };
 		2FEE1D0821DCC36700A0D170 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEE1D0721DCC36700A0D170 /* AppDelegate.swift */; };
 		2FEE1D0A21DCC36700A0D170 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEE1D0921DCC36700A0D170 /* ViewController.swift */; };
@@ -104,7 +103,6 @@
 		1D5F206AE5D4F883B42D3380 /* Pods_ToDeOlho.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ToDeOlho.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2F40A92921DCD77400468CFC /* EntrarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntrarViewController.swift; sourceTree = "<group>"; };
 		2F40A92A21DCD77400468CFC /* CadastroTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CadastroTableViewController.swift; sourceTree = "<group>"; };
-		2F40A92B21DCD77400468CFC /* REST.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = REST.swift; sourceTree = "<group>"; };
 		2F40A93421DCECCB00468CFC /* Constantes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constantes.swift; sourceTree = "<group>"; };
 		2FEE1D0421DCC36700A0D170 /* ToDeOlho.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDeOlho.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FEE1D0721DCC36700A0D170 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -161,7 +159,6 @@
 			children = (
 				2F40A92A21DCD77400468CFC /* CadastroTableViewController.swift */,
 				2F40A92921DCD77400468CFC /* EntrarViewController.swift */,
-				2F40A92B21DCD77400468CFC /* REST.swift */,
 				2FEE1E0B21DCCB4600A0D170 /* SWRevealViewController */,
 				2FEE1D1A21DCC3EC00A0D170 /* BarraLateralTableViewController.swift */,
 				2FEE1D1C21DCC3EC00A0D170 /* DenunciaTableViewController.swift */,
@@ -379,7 +376,6 @@
 				2FEE1D1F21DCC3ED00A0D170 /* BarraLateralTableViewController.swift in Sources */,
 				2FEE1D1E21DCC3ED00A0D170 /* DenunciaViewController.swift in Sources */,
 				2FEE1D2121DCC3ED00A0D170 /* DenunciaTableViewController.swift in Sources */,
-				2F40A92E21DCD77400468CFC /* REST.swift in Sources */,
 				2F40A93521DCECCB00468CFC /* Constantes.swift in Sources */,
 				2F40A92D21DCD77400468CFC /* CadastroTableViewController.swift in Sources */,
 				2FEE1D0A21DCC36700A0D170 /* ViewController.swift in Sources */,

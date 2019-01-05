@@ -11,15 +11,12 @@ import Alamofire
 
 
 class EntrarViewController: UIViewController {
-    
-    //let URL_USER_LOGIN =
-    
     @IBOutlet weak var login: UITextField!
     @IBOutlet weak var senha: UITextField!
     
     @IBAction func entrar(_ sender: Any) {
             
-            let parametros: Parameters = ["email": login.text!, "password": senha.text!]
+        let parametros: Parameters = ["email": login.text!, "password": senha.text!]
             
         Alamofire.request(Config.loginURL, method: .post, parameters: parametros).responseJSON{ response in
             guard let json = response.result.value as? [String: Any] else{
@@ -34,7 +31,6 @@ class EntrarViewController: UIViewController {
                 return
             }
             print("Created retorno with id: \(retorno)")
-            //var statusCode = response.response?.statusCode
 
             if retorno == "true" {
                 //Persistindo dados de usuario
@@ -47,12 +43,13 @@ class EntrarViewController: UIViewController {
             }
             else{
                print("Senha ou email errado")
+                let alertController = UIAlertController(title: "Erro de login", message: "Nome de usuário ou senha errados. Por favor tente outra vez.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                
+                self.present(alertController, animated: true, completion: nil)
             }
-
-            }
-        
+        }
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,24 +62,11 @@ class EntrarViewController: UIViewController {
             
             self.performSegue(withIdentifier: "loginSegue", sender: nil)
         }
-        
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

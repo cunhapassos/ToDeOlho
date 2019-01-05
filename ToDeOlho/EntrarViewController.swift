@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 
+
 class EntrarViewController: UIViewController {
     
     //let URL_USER_LOGIN =
@@ -20,62 +21,33 @@ class EntrarViewController: UIViewController {
             
             let parametros: Parameters = ["email": login.text!, "password": senha.text!]
             
-        Alamofire.request(Config.loginURL, method: .post, parameters: parametros).responseJSON{
-                response in
-                    print("Success: \(response.result.isSuccess)")
-                print("Response String: \(String(describing: response.result.value))")
-                
-                var statusCode = response.response?.statusCode
-                if let error = response.result.error as? AFError {
-                    statusCode = error._code // statusCode private
-                    switch error {
-                    case .invalidURL(let url):
-                        print("Invalid URL: \(url) - \(error.localizedDescription)")
-                    case .parameterEncodingFailed(let reason):
-                        print("Parameter encoding failed: \(error.localizedDescription)")
-                        print("Failure Reason: \(reason)")
-                    case .multipartEncodingFailed(let reason):
-                        print("Multipart encoding failed: \(error.localizedDescription)")
-                        print("Failure Reason: \(reason)")
-                    case .responseValidationFailed(let reason):
-                        print("Response validation failed: \(error.localizedDescription)")
-                        print("Failure Reason: \(reason)")
-                        
-                        switch reason {
-                        case .dataFileNil, .dataFileReadFailed:
-                            print("Downloaded file could not be read")
-                        case .missingContentType(let acceptableContentTypes):
-                            print("Content Type Missing: \(acceptableContentTypes)")
-                        case .unacceptableContentType(let acceptableContentTypes, let responseContentType):
-                            print("Response content type: \(responseContentType) was unacceptable: \(acceptableContentTypes)")
-                        case .unacceptableStatusCode(let code):
-                            print("Response status code was unacceptable: \(code)")
-                            statusCode = code
-                        }
-                    case .responseSerializationFailed(let reason):
-                        print("Response serialization failed: \(error.localizedDescription)")
-                        print("Failure Reason: \(reason)")
-                        // statusCode = 3840 ???? maybe..
-                    }
-                    
-                    print("Underlying error: \(error.underlyingError)")
-                } else if let error = response.result.error as? URLError {
-                    print("URLError occurred: \(error)")
-                } else {
-                    print("Unknown error: \(response.result.error)")
+        Alamofire.request(Config.loginURL, method: .post, parameters: parametros).responseJSON{ response in
+            guard let json = response.result.value as? [String: Any] else{
+                print("Nao foi possivel obter o objeto de retorno como JSON from API")
+                if let error = response.result.error {
+                    print("Error: \(error)")
                 }
-                
-                print(statusCode) // the status code
-                
-                if statusCode == 200 {
-                    //Persistindo dados de usuario
-                    UserDefaults.standard.set(self.login.text!, forKey: "usuario")
-                    UserDefaults.standard.set(self.senha.text!, forKey: "senha")
-                    UserDefaults.standard.set(true, forKey: "usuarioLogado")
+                return
+            }
+            guard let retorno = json["sucesso"] as? String else{
+                print("Nao foi possivel recuperar o retorno do login")
+                return
+            }
+            print("Created retorno with id: \(retorno)")
+            //var statusCode = response.response?.statusCode
+
+            if retorno == "true" {
+                //Persistindo dados de usuario
+                UserDefaults.standard.set(self.login.text!, forKey: "usuario")
+                UserDefaults.standard.set(self.senha.text!, forKey: "senha")
+                UserDefaults.standard.set(true, forKey: "usuarioLogado")
                     
-                    // Indo para tela princiapal
-                    self.performSegue(withIdentifier: "loginSegue", sender: nil)
-                }
+                // Indo para tela princiapal
+                self.performSegue(withIdentifier: "loginSegue", sender: nil)
+            }
+            else{
+               print("Senha ou email errado")
+            }
 
             }
         

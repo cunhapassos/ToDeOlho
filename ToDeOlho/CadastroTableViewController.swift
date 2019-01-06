@@ -46,17 +46,13 @@ class CadastroTableViewController: UITableViewController {
                         Alamofire.request(Config.inserirUsuarioURL, method: .post, parameters: parametros).responseJSON{
                             response in
                             let statusCode = response.response?.statusCode
-                            print(statusCode) // the status code
+                            print(statusCode as Any) // the status code
                             
                             print("Success: \(response.result.isSuccess)")
-                            print("Response String: \(response.result.value)")
-                            
-
-                            
+                            print("Response String: \(String(describing: response.result.value))")
+   
                             if statusCode == 200 {
                                 //CHAMar mensagem de usuario criado com sucesso
-                                
-                                
                                 // Indo para tela princiapal
                                 self.performSegue(withIdentifier: "inserirSegue", sender: nil)
                             }
@@ -65,7 +61,6 @@ class CadastroTableViewController: UITableViewController {
                                 self.exibirMensagem(titulo: "Erro no cadastro", mensagem: "Algo deu errado no cadastro do usuário, tente em instantes.")
                             }
                         }
-                        
                     }else{
                         self.exibirMensagem(titulo: "Dados incorretos", mensagem: "As senhas não estão iguais, digite novamente.")
                     }
@@ -92,7 +87,6 @@ class CadastroTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         nascimentoLabel.text = getToday()
     }
     

@@ -6,5 +6,12 @@ target 'ToDeOlho' do
   use_frameworks!
 
   # Pods for ToDeOlho
+#  pod 'FacebookCore'
+#  pod 'FacebookLogin'
+#  pod 'FacebookShare'
+
+  pod 'GoogleSignIn'
+
+  #pod 'TwitterKit'
 
 end

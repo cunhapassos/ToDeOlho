@@ -19,3 +19,5 @@ struct Config {
     static let URL_TPOS_DESORDEM = "https://projetomds.herokuapp.com/api/tipodedesordem"
     static let URL_ISERIR_DENUNCIA = "https://projetomds.herokuapp.com/api/denuncia/inserir"
 }
+
+

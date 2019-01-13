@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F06EE7E21EA1784003AA5BE /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F06EE7D21EA1784003AA5BE /* BaseViewController.swift */; };
 		2F40A92C21DCD77400468CFC /* EntrarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A92921DCD77400468CFC /* EntrarViewController.swift */; };
 		2F40A92D21DCD77400468CFC /* CadastroTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A92A21DCD77400468CFC /* CadastroTableViewController.swift */; };
 		2F40A93521DCECCB00468CFC /* Constantes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A93421DCECCB00468CFC /* Constantes.swift */; };
@@ -102,9 +103,11 @@
 /* Begin PBXFileReference section */
 		0D24FB3FC107F318EFE84077 /* Pods-ToDeOlho.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ToDeOlho.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ToDeOlho/Pods-ToDeOlho.debug.xcconfig"; sourceTree = "<group>"; };
 		1D5F206AE5D4F883B42D3380 /* Pods_ToDeOlho.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ToDeOlho.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F06EE7D21EA1784003AA5BE /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		2F40A92921DCD77400468CFC /* EntrarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntrarViewController.swift; sourceTree = "<group>"; };
 		2F40A92A21DCD77400468CFC /* CadastroTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CadastroTableViewController.swift; sourceTree = "<group>"; };
 		2F40A93421DCECCB00468CFC /* Constantes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constantes.swift; sourceTree = "<group>"; };
+		2F57E3ED21EB993F00E67282 /* ToDeOlho.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ToDeOlho.entitlements; sourceTree = "<group>"; };
 		2F83A7D521E16AD70075657E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2FEE1D0421DCC36700A0D170 /* ToDeOlho.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDeOlho.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FEE1D0721DCC36700A0D170 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -159,6 +162,8 @@
 		2FEE1D0621DCC36700A0D170 /* ToDeOlho */ = {
 			isa = PBXGroup;
 			children = (
+				2F57E3ED21EB993F00E67282 /* ToDeOlho.entitlements */,
+				2F06EE7D21EA1784003AA5BE /* BaseViewController.swift */,
 				2F40A92A21DCD77400468CFC /* CadastroTableViewController.swift */,
 				2F40A92921DCD77400468CFC /* EntrarViewController.swift */,
 				2FEE1E0B21DCCB4600A0D170 /* SWRevealViewController */,
@@ -259,6 +264,11 @@
 						CreatedOnToolsVersion = 9.2;
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -358,17 +368,19 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-ToDeOlho/Pods-ToDeOlho-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
+				"${BUILT_PRODUCTS_DIR}/FBSDKLoginKit/FBSDKLoginKit.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKLoginKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 			);
@@ -400,15 +412,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-ToDeOlho/Pods-ToDeOlho-resources.sh",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
@@ -429,6 +437,7 @@
 				2FEE1D1E21DCC3ED00A0D170 /* DenunciaViewController.swift in Sources */,
 				2FEE1D2121DCC3ED00A0D170 /* DenunciaTableViewController.swift in Sources */,
 				2F40A93521DCECCB00468CFC /* Constantes.swift in Sources */,
+				2F06EE7E21EA1784003AA5BE /* BaseViewController.swift in Sources */,
 				2F40A92D21DCD77400468CFC /* CadastroTableViewController.swift in Sources */,
 				2FEE1D0A21DCC36700A0D170 /* ViewController.swift in Sources */,
 				2FEE1D0821DCC36700A0D170 /* AppDelegate.swift in Sources */,
@@ -583,7 +592,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 33WPAHP985;
 				INFOPLIST_FILE = ToDeOlho/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.passos.ToDeOlho;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -604,7 +613,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 33WPAHP985;
 				INFOPLIST_FILE = ToDeOlho/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.passos.ToDeOlho;
 				PRODUCT_NAME = "$(TARGET_NAME)";

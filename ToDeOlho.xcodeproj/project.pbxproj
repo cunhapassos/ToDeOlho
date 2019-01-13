@@ -11,6 +11,8 @@
 		2F40A92C21DCD77400468CFC /* EntrarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A92921DCD77400468CFC /* EntrarViewController.swift */; };
 		2F40A92D21DCD77400468CFC /* CadastroTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A92A21DCD77400468CFC /* CadastroTableViewController.swift */; };
 		2F40A93521DCECCB00468CFC /* Constantes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A93421DCECCB00468CFC /* Constantes.swift */; };
+		2F43D5BB21EBBCF000D2AA14 /* Autenticador.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F43D5BA21EBBCF000D2AA14 /* Autenticador.swift */; };
+		2F43D5C421EBBD8800D2AA14 /* SocialDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F43D5C321EBBD8800D2AA14 /* SocialDelegate.swift */; };
 		2F83A7DD21E16AD70075657E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2F83A7D521E16AD70075657E /* GoogleService-Info.plist */; };
 		2FEE1D0821DCC36700A0D170 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEE1D0721DCC36700A0D170 /* AppDelegate.swift */; };
 		2FEE1D0A21DCC36700A0D170 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEE1D0921DCC36700A0D170 /* ViewController.swift */; };
@@ -107,6 +109,8 @@
 		2F40A92921DCD77400468CFC /* EntrarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntrarViewController.swift; sourceTree = "<group>"; };
 		2F40A92A21DCD77400468CFC /* CadastroTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CadastroTableViewController.swift; sourceTree = "<group>"; };
 		2F40A93421DCECCB00468CFC /* Constantes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constantes.swift; sourceTree = "<group>"; };
+		2F43D5BA21EBBCF000D2AA14 /* Autenticador.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Autenticador.swift; sourceTree = "<group>"; };
+		2F43D5C321EBBD8800D2AA14 /* SocialDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialDelegate.swift; sourceTree = "<group>"; };
 		2F57E3ED21EB993F00E67282 /* ToDeOlho.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ToDeOlho.entitlements; sourceTree = "<group>"; };
 		2F83A7D521E16AD70075657E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2FEE1D0421DCC36700A0D170 /* ToDeOlho.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDeOlho.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -165,6 +169,8 @@
 				2F57E3ED21EB993F00E67282 /* ToDeOlho.entitlements */,
 				2F06EE7D21EA1784003AA5BE /* BaseViewController.swift */,
 				2F40A92A21DCD77400468CFC /* CadastroTableViewController.swift */,
+				2F43D5BA21EBBCF000D2AA14 /* Autenticador.swift */,
+				2F43D5C321EBBD8800D2AA14 /* SocialDelegate.swift */,
 				2F40A92921DCD77400468CFC /* EntrarViewController.swift */,
 				2FEE1E0B21DCCB4600A0D170 /* SWRevealViewController */,
 				2FEE1D1A21DCC3EC00A0D170 /* BarraLateralTableViewController.swift */,
@@ -436,6 +442,8 @@
 				2FEE1D1F21DCC3ED00A0D170 /* BarraLateralTableViewController.swift in Sources */,
 				2FEE1D1E21DCC3ED00A0D170 /* DenunciaViewController.swift in Sources */,
 				2FEE1D2121DCC3ED00A0D170 /* DenunciaTableViewController.swift in Sources */,
+				2F43D5BB21EBBCF000D2AA14 /* Autenticador.swift in Sources */,
+				2F43D5C421EBBD8800D2AA14 /* SocialDelegate.swift in Sources */,
 				2F40A93521DCECCB00468CFC /* Constantes.swift in Sources */,
 				2F06EE7E21EA1784003AA5BE /* BaseViewController.swift in Sources */,
 				2F40A92D21DCD77400468CFC /* CadastroTableViewController.swift in Sources */,

@@ -12,7 +12,7 @@ import GoogleSignIn
 import FBSDKCoreKit
 import FBSDKLoginKit
 
-class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
+class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate, SocialDelegate {
     
     let URL_USER_LOGIN = "http://projetomds.herokuapp.com/app/login"
     
@@ -23,6 +23,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
     @IBOutlet weak var googleButton: UIButton!
     @IBOutlet weak var labelError: UILabel!
     
+    let socialAuth : Autenticador = Autenticador()
 
     @IBAction func entrar(_ sender: Any) {
         let parametros: Parameters = ["email": login.text!, "password": senha.text!]
@@ -80,12 +81,12 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         loginButton.delegate = self
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
-        
+        socialAuth.delegate = self
 
         guard FBSDKAccessToken.current() == nil else {
             // User is logged in, use 'accessToken' here.
             //showProgressIndicator()
-            //socialAuth.facebookLogin()
+            
             return
         }
     }
@@ -153,7 +154,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
             print("ERROR ::\(error.localizedDescription)")
         }
     }
-    /*
+    
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
         print(user)
         labelError.isHidden = true;
@@ -174,7 +175,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         print(error?.localizedDescription as Any)
         labelError.isHidden = false;
         labelError.text = "Failed : "+(error?.localizedDescription)!+""
-    } */
+    }
     // FACEBOOK LOGIN API -----
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
@@ -198,7 +199,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         guard error != nil else{
             showProgressIndicator()
             print("LOGIN SUCCESSFULL")
-            self.performSegue(withIdentifier: "loginSegue", sender: nil)
+            socialAuth.facebookLogin()
             hideProgressIndicator()
             //socialAuth.facebookLogin()
             return
@@ -239,8 +240,9 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
                 })
                 
             }).resume()
-            
+            self.performSegue(withIdentifier: "loginSegue", sender: nil)
         }
+        
         hideProgressIndicator()
     }
     

@@ -65,8 +65,8 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         super.viewDidLoad()
         
         labelError.isHidden = true
-        
         let status = UserDefaults.standard.bool(forKey: "usuarioLogado")
+        
         if status {
             let logado = UserDefaults.standard.string(forKey: "usuarioLogado")
             let usuario = UserDefaults.standard.string(forKey: "usuario")
@@ -210,18 +210,21 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
     }
     
     func onFBSuccessResponse(user: Any) {
-        print(user)
+        //print("AQUI \n")
+        //print(user)
         
         if let userDataDict = user as? NSDictionary {
-            let first_name = userDataDict["first_name"] as? String
-            _ = userDataDict["id"] as? String
-            let last_name = userDataDict["last_name"] as? String
+            let usuario = userDataDict["email"] as? String
+            UserDefaults.standard.set(usuario, forKey: "usuario")
+            
+            let id = userDataDict["id"] as? String
+            UserDefaults.standard.set(id, forKey: "senha")
+            UserDefaults.standard.set(true, forKey: "usuarioLogado")
+            
             let pictDict =  userDataDict["picture"] as? NSDictionary
             let pictureUrl = pictDict?["data"] as? NSDictionary
             let picture = pictureUrl?["url"] as? String
             
-            labelError.isHidden = false;
-            labelError.text = "Profile : "+first_name!+" "+last_name!+""
             
             URLSession.shared.dataTask(with: NSURL(string: picture!)! as URL, completionHandler: { (data, response, error) -> Void in
                 
@@ -231,12 +234,8 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
                 }
                 DispatchQueue.main.async(execute: { () -> Void in
                     let image = UIImage(data: data!)
-                    self.imageSocial.image = image
-                    self.imageSocial.layer.borderWidth = 1
-                    self.imageSocial.layer.masksToBounds = false
-                    self.imageSocial.layer.borderColor = UIColor.clear.cgColor
-                    self.imageSocial.layer.cornerRadius = self.imageSocial.frame.height/2
-                    self.imageSocial.clipsToBounds = true
+                    let imgData = UIImageJPEGRepresentation(image!, 1)
+                    UserDefaults.standard.set(imgData, forKey: "perfil")
                 })
                 
             }).resume()

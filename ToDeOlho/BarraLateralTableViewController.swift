@@ -9,7 +9,7 @@
 import UIKit
 
 
-class BarraLateralTableViewController: UITableViewController {
+class BarraLateralTableViewController: UITableViewController{
 
     
     @IBOutlet weak var nomeUsuarioLabel: UILabel!
@@ -24,6 +24,7 @@ class BarraLateralTableViewController: UITableViewController {
         UserDefaults.standard.setValue(false, forKey: "usuarioLogado")
         nomeUsuarioLabel.text = "Fazer Login"
         self.profile.image = UIImage(named: "login.png")
+        
     }
     
     override func viewDidLoad() {

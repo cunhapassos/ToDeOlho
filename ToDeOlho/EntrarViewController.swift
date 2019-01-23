@@ -14,7 +14,7 @@ import FBSDKLoginKit
 
 class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate, SocialDelegate {
     
-    let URL_USER_LOGIN = "http://projetomds.herokuapp.com/app/login"
+    //let URL_USER_LOGIN = "http://projetomds.herokuapp.com/app/login"
     
     @IBOutlet weak var imageSocial: UIImageView!
     @IBOutlet weak var login: UITextField!
@@ -100,7 +100,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         // Dispose of any resources that can be recreated.
     }
     
-    // GOOGLE LOGIN API -----
+    // ----- GOOGLE LOGIN API -----
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         print(user)
         
@@ -120,6 +120,11 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
             let email = user.profile.email
             print("User email address is "+email!+"")
             
+            if self.consultarUsuario(login: user.profile.email, senha: user.userID) {
+                //print("NAO CADASTRADO")
+                self.cadastrarUsuario(login: user.profile.email, senha: user.userID, nome: user.profile.name)
+            }
+            
             UserDefaults.standard.set(user.profile.email, forKey: "usuario")
             UserDefaults.standard.set(user.authentication.idToken, forKey: "senha")
             UserDefaults.standard.set(true, forKey: "usuarioLogado")
@@ -127,6 +132,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
             
             labelError.isHidden = false;
             labelError.text = "Profile : "+fullName!+""
+            
             
             self.performSegue(withIdentifier: "loginSegue", sender: nil)
             
@@ -214,10 +220,17 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         //print(user)
         
         if let userDataDict = user as? NSDictionary {
-            let usuario = userDataDict["email"] as? String
-            UserDefaults.standard.set(usuario, forKey: "usuario")
             
-            let id = userDataDict["id"] as? String
+
+            let usuario = userDataDict["email"] as! String
+            let id = userDataDict["id"] as! String
+            let name = userDataDict["first_name"] as! String
+            
+            if consultarUsuario(login: usuario, senha: id){
+                cadastrarUsuario(login: usuario, senha: id, nome: name)
+            }
+            
+            UserDefaults.standard.set(usuario, forKey: "usuario")
             UserDefaults.standard.set(id, forKey: "senha")
             UserDefaults.standard.set(true, forKey: "usuarioLogado")
             
@@ -251,6 +264,71 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         labelError.isHidden = false;
         labelError.text = "Failed : "+(error?.localizedDescription)!+""
         self.imageSocial.image = UIImage(named: "login.png")
+    }
+    
+    func consultarUsuario(login: String, senha: String) -> Bool
+    {
+        let parametros: Parameters = ["email": login, "password": senha]
+        var retornoBool = true
+        
+        Alamofire.request(Config.loginURL, method: .post, parameters: parametros).responseJSON
+            {
+                response in switch response.result
+                {
+                case .success(let JSON):
+                    let response = JSON as! NSDictionary
+                    
+                    let sucesso = response["sucesso"] as? String
+                    if sucesso == "false"{
+                        retornoBool = false
+                    }
+                case .failure(let error):
+                    print("Request failed with error:\(error)")
+            }
+        }
+        return retornoBool
+    }
+    
+    func cadastrarUsuario(login: String, senha: String, nome: String) -> Bool{
+        
+        
+        let nascimento = "01/01/2001"
+        let nomeUsuario = login
+        let cpf = ""
+        let confia = 0
+        let tipo = 2
+        let telefone = ""
+        let email = login
+        
+        let parametros: Parameters = ["login": nomeUsuario, "senha": senha, "email": email, "nascimento": nascimento, "cpf": cpf,"nome": nome, "confia": confia, "tipo": tipo, "telefone": telefone]
+        
+        Alamofire.request(Config.inserirUsuarioURL, method: .post, parameters: parametros).responseJSON{
+            response in
+            let statusCode = response.response?.statusCode
+            print(statusCode as Any) // the status code
+            
+            print("Success: \(response.result.isSuccess)")
+            print("Response String: \(String(describing: response.result.value))")
+            
+            if statusCode == 200 {
+                //CHAMar mensagem de usuario criado com sucesso
+                // Indo para tela princiapal
+                print("Usuario inserido com sucesso!")
+            }
+            else{
+                // Emitir mensagem de ERRO
+                self.exibirMensagem(titulo: "Erro no cadastro", mensagem: "Algo deu errado no cadastro do usuário, tente em instantes.")
+            }
+        }
+        return true
+    }
+    
+    func exibirMensagem(titulo: String, mensagem: String) {
+        let alerta = UIAlertController(title: titulo, message: mensagem, preferredStyle: .alert)
+        let acaoCancelar = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        
+        alerta.addAction(acaoCancelar)
+        present(alerta, animated: true, completion: nil)
     }
 
 }

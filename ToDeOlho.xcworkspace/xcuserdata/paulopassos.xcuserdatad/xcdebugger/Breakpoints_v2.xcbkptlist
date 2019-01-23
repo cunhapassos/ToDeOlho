@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ToDeOlho/EntrarViewController.swift"
+            timestampString = "569944272.063184"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "sign(_:didSignInFor:withError:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ToDeOlho/EntrarViewController.swift"
+            timestampString = "569944272.063507"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
+            landmarkName = "consultarUsuario(login:senha:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ToDeOlho.EntrarViewController.consultarUsuario(login: Swift.String, senha: Swift.String) -&gt; Swift.Bool"
+                  moduleName = "ToDeOlho"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/HT-CUNHA/DESENVOLVIMENTO/ToDeOlho/ToDeOlho/EntrarViewController.swift"
+                  timestampString = "569936877.557525"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "273"
+                  endingLineNumber = "273"
+                  offsetFromSymbolStart = "400">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Alamofire.DataResponse&lt;Any&gt;) -&gt; () in ToDeOlho.EntrarViewController.consultarUsuario(login: Swift.String, senha: Swift.String) -&gt; Swift.Bool"
+                  moduleName = "ToDeOlho"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Volumes/HT-CUNHA/DESENVOLVIMENTO/ToDeOlho/ToDeOlho/EntrarViewController.swift"
+                  timestampString = "569936877.559069"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "271"
+                  endingLineNumber = "271"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

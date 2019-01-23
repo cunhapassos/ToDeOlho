@@ -34,9 +34,11 @@ class CadastroTableViewController: UITableViewController {
                         print("Senhas iguais!")
                         
                         let nascimento = nascimentoLabel.text!
+                        print(nascimento)
                         let nomeUsuario = self.emailTextField.text!
                         let nome = nomeTextField.text!
                         let cpf = cpfTextField.text!
+                        print(cpf)
                         let confia = 0
                         let tipo = 2
                         let telefone = ""

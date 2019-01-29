@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 
 
-class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
+class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, Denuncia {
     
     @IBOutlet weak var mapDenView: MKMapView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -37,6 +37,7 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         let template = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
         let carte_indice = MKTileOverlay(urlTemplate:template) 
         
+        let denuncia = Denuncia()
         carte_indice.canReplaceMapContent = true
         self.mapDenView.add(carte_indice)
         
@@ -92,6 +93,7 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     }
     
     @objc func marcar(gesture: UIGestureRecognizer){
+
 
         if gesture.state == UIGestureRecognizerState.began {
             let pontoSelecionado = gesture.location(in: self.mapDenView)

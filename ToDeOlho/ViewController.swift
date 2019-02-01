@@ -14,6 +14,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var addButton: UIButton!
     
     let locationManager = CLLocationManager()
     
@@ -52,8 +53,19 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         
+        /* Botão Adicionar denuncia */
+        addButton.layer.masksToBounds = true
+        addButton.layer.zPosition = 1
+        addButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        addButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        addButton.layer.shadowOpacity = 1.0
+        addButton.layer.shadowRadius = 0.0
+        addButton.layer.masksToBounds = false
+        addButton.layer.cornerRadius = 4.0
+        
         self.mapView.delegate = self
 
+        /* Buscando openstreetmap  */
         let template = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
         let carte_indice = MKTileOverlay(urlTemplate:template)
         

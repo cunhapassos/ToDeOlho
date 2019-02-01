@@ -21,6 +21,15 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Myc-ri-y50">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="utH-0X-z4Y">
+                                <rect key="frame" x="287" y="572" width="60" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" red="0.4823529412" green="0.086274509799999996" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="+">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -33,16 +42,17 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Mapa" id="Jd8-02-07i">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="reveal-icon" id="qiL-sh-AaX"/>
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="reveal-icon" springLoaded="YES" id="qiL-sh-AaX"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="addButton" destination="utH-0X-z4Y" id="Yim-Pw-QXD"/>
                         <outlet property="mapView" destination="Myc-ri-y50" id="JpI-KU-Zwb"/>
                         <outlet property="menuButton" destination="qiL-sh-AaX" id="Ilu-DH-YAR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1153" y="892"/>
+            <point key="canvasLocation" x="1153" y="890"/>
         </scene>
         <!--Barra Lateral Table View Controller-->
         <scene sceneID="8vj-5L-zH4">
@@ -562,9 +572,12 @@
                     <navigationBar key="navigationBar" opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hBi-qI-Ihn">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" red="0.23346993327140808" green="0.31979086995124817" blue="0.53804546594619751" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="tintColor" red="0.23346993329999999" green="0.31979087" blue="0.53804546590000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="barTintColor" red="0.4823529411764706" green="0.086274509803921567" blue="0.52941176470588236" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="barTintColor" red="0.47843137254901957" green="0.086274509803921567" blue="0.52941176470588236" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -1055,7 +1068,7 @@
         <image name="reveal-icon" width="22" height="17"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="tVy-yE-PK4"/>
+        <segue reference="JDe-hC-lDb"/>
         <segue reference="5mn-im-lcz"/>
     </inferredMetricsTieBreakers>
 </document>

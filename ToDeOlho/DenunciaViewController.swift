@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 
 
-class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, Denuncia {
+class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
     @IBOutlet weak var mapDenView: MKMapView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
@@ -37,7 +37,7 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         let template = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
         let carte_indice = MKTileOverlay(urlTemplate:template) 
         
-        let denuncia = Denuncia()
+        //let denuncia = Denuncia()
         carte_indice.canReplaceMapContent = true
         self.mapDenView.add(carte_indice)
         

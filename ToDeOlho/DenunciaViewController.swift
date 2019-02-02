@@ -16,7 +16,6 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     @IBOutlet weak var proximoButton: UIBarButtonItem!
     
     let locationManager = CLLocationManager()
-    
     var latitude: CLLocationDegrees = 0.0
     var longitude: CLLocationDegrees = 0.0
     var cnt: Int = 0
@@ -25,22 +24,17 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        proximoButton.isEnabled = false
+        proximoButton.isEnabled         = false
         
-        locationManager.delegate = self
-
-        //locationManager.requestWhenInUseAuthorization()
+        locationManager.delegate        = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
         
         let lat: CLLocationDegrees = locationManager.location!.coordinate.latitude
         let lon: CLLocationDegrees = locationManager.location!.coordinate.longitude
-        
         let localizacao: CLLocationCoordinate2D = CLLocationCoordinate2DMake(lat, lon)
-        
-        //Declare span of map
-        let span = MKCoordinateSpan.init(latitudeDelta: 0.01, longitudeDelta: 0.01)
-        
-        //Set region of the map
-        let region = MKCoordinateRegion(center: localizacao, span: span)
+        let span    = MKCoordinateSpan.init(latitudeDelta: 0.07, longitudeDelta: 0.07) //Declare span of map
+        let region  = MKCoordinateRegion(center: localizacao, span: span) //Set region of the map
         self.mapDenView.setRegion(region, animated: true)
         
     
@@ -63,35 +57,7 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    /*
-    func mapView(_ mapView: MKMapView!, rendererFor overlay: MKOverlay!) -> MKOverlayRenderer! {
-        if overlay is MKTileOverlay
-        {
-            let renderer = MKTileOverlayRenderer(overlay:overlay)
-            renderer.alpha = 0.8
-            return renderer
-        }
-        return nil
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let localizacaoUsuario: CLLocation = locations.last!
-        
-        // Exibição do Mapa
-        //Map centre
-        let latitude: CLLocationDegrees = localizacaoUsuario.coordinate.latitude
-        let longitude: CLLocationDegrees = localizacaoUsuario.coordinate.longitude
-        let localizacao: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
-        
-        //Declare span of map
-        let span = MKCoordinateSpan.init(latitudeDelta: 0.01, longitudeDelta: 0.01)
-        
-        //Set region of the map
-        let region = MKCoordinateRegion(center: localizacao, span: span)
-        self.mapDenView.setRegion(region, animated: true)
-        //self.mapView.regionThatFits(region)
-        
-    } */
+
     
     @objc func marcar(gesture: UIGestureRecognizer){
 

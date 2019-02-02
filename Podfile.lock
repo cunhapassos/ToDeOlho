@@ -1,11 +1,12 @@
 PODS:
+  - Alamofire (4.8.1)
   - Bolts (1.9.0):
     - Bolts/AppLinks (= 1.9.0)
     - Bolts/Tasks (= 1.9.0)
   - Bolts/AppLinks (1.9.0):
     - Bolts/Tasks
   - Bolts/Tasks (1.9.0)
-  - FBSDKCoreKit (4.39.1):
+  - FBSDKCoreKit (4.40.0):
     - Bolts (~> 1.9)
   - FBSDKLoginKit (4.39.1):
     - FBSDKCoreKit
@@ -24,11 +25,13 @@ PODS:
   - GTMSessionFetcher/Core (1.2.1)
 
 DEPENDENCIES:
+  - Alamofire
   - FBSDKLoginKit (~> 4.39.1)
   - GoogleSignIn
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Alamofire
     - Bolts
     - FBSDKCoreKit
     - FBSDKLoginKit
@@ -37,13 +40,14 @@ SPEC REPOS:
     - GTMSessionFetcher
 
 SPEC CHECKSUMS:
+  Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
-  FBSDKCoreKit: f442aa96179cc9b382bb4abeb7e340a47cca8f91
+  FBSDKCoreKit: ae214474b25033399c131dc81d258e412582a2ba
   FBSDKLoginKit: c3079d9a4db27c492287b1eed7a4272b28cf8a59
   GoogleSignIn: 7ff245e1a7b26d379099d3243a562f5747e23d39
   GoogleToolboxForMac: ff31605b7d66400dcec09bed5861689aebadda4d
   GTMSessionFetcher: 32aeca0aa144acea523e1c8e053089dec2cb98ca
 
-PODFILE CHECKSUM: 605616c50a964aa67c6aa9b82752a799261fbbbd
+PODFILE CHECKSUM: 64bcc4ceb94c77e6de89e468aabf2b72b246891b
 
-COCOAPODS: 1.5.2
+COCOAPODS: 1.5.3

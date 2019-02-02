@@ -48,10 +48,16 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        locationManager.delegate = self
+        locationManager.delegate        = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        //locationManager.startUpdatingLocation()
+        
+        let lat: CLLocationDegrees = locationManager.location!.coordinate.latitude
+        let lon: CLLocationDegrees = locationManager.location!.coordinate.longitude
+        let localizacao: CLLocationCoordinate2D = CLLocationCoordinate2DMake(lat, lon)
+        let span    = MKCoordinateSpan.init(latitudeDelta: 0.11, longitudeDelta: 0.11) //Declare span of map
+        let region  = MKCoordinateRegion(center: localizacao, span: span)  //Set region of the map
+        self.mapView.setRegion(region, animated: true)
         
         /* Botão Adicionar denuncia */
         addButton.layer.masksToBounds = true
@@ -83,7 +89,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    /*
     func mapView(_ mapView: MKMapView!, rendererFor overlay: MKOverlay!) -> MKOverlayRenderer! {
         if overlay is MKTileOverlay
         {
@@ -112,6 +118,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         self.mapView.regionThatFits(region)
         
     }
+     */
     
     func sideMenu(){
         if self.revealViewController() != nil {
@@ -130,13 +137,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
         else{
             // Cria o alerta
-            let alert = UIAlertController(title: "Não há usuário logado", message: "Para cadastrar uma denuncia você precisa fazer login. Deseja fazer login agora?", preferredStyle: UIAlertController.Style.alert)
+            let alert = UIAlertController(title: "Não há usuário logado", message: "Para cadastrar uma denuncia você precisa fazer login. Deseja fazer login agora?", preferredStyle: .alert)
             
             // Adiciona acoes (botoes
-            alert.addAction(UIAlertAction(title: "Sim", style: UIAlertAction.Style.default, handler: { action in
+            alert.addAction(UIAlertAction(title: "Sim", style: .default, handler: { action in
                 self.performSegue(withIdentifier: "loginSegue", sender: nil)
             }))
-            alert.addAction(UIAlertAction(title: "Não", style: UIAlertAction.Style.cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Não", style: .cancel, handler: nil))
             
             // Mostra o alerta
             self.present(alert, animated: true, completion: nil)

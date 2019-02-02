@@ -7,6 +7,7 @@ target 'ToDeOlho' do
 
 pod 'FBSDKLoginKit', '~> 4.39.1'
 pod 'GoogleSignIn'
+pod ‘Alamofire’
 
   #pod 'TwitterKit'
 

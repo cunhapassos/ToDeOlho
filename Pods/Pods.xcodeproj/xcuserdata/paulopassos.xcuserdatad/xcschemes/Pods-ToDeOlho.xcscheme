@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C5DD27285D17FCFA530FD86AD3512062"
+               BlueprintIdentifier = "EE7245F35BE79BB70F390FF47AE42D05"
                BuildableName = "Pods_ToDeOlho.framework"
                BlueprintName = "Pods-ToDeOlho"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -26,7 +26,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
@@ -37,7 +36,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -47,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C5DD27285D17FCFA530FD86AD3512062"
+            BlueprintIdentifier = "EE7245F35BE79BB70F390FF47AE42D05"
             BuildableName = "Pods_ToDeOlho.framework"
             BlueprintName = "Pods-ToDeOlho"
             ReferencedContainer = "container:Pods.xcodeproj">

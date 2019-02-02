@@ -51,7 +51,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
+        //locationManager.startUpdatingLocation()
         
         /* Botão Adicionar denuncia */
         addButton.layer.masksToBounds = true
@@ -104,7 +104,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let centre = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         
         //Declare span of map
-        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        let span = MKCoordinateSpan(latitudeDelta: 0.007, longitudeDelta: 0.007)
         
         //Set region of the map
         let region = MKCoordinateRegion(center: centre, span: span)
@@ -118,6 +118,28 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+        }
+    }
+    
+    @IBAction func adicionarDenuncia(_ sender: Any) {
+        
+        let status = UserDefaults.standard.bool(forKey: "usuarioLogado")
+        
+        if status {
+            self.performSegue(withIdentifier: "denunciaSegue", sender: nil)
+        }
+        else{
+            // Cria o alerta
+            let alert = UIAlertController(title: "Não há usuário logado", message: "Para cadastrar uma denuncia você precisa fazer login. Deseja fazer login agora?", preferredStyle: UIAlertController.Style.alert)
+            
+            // Adiciona acoes (botoes
+            alert.addAction(UIAlertAction(title: "Sim", style: UIAlertAction.Style.default, handler: { action in
+                self.performSegue(withIdentifier: "loginSegue", sender: nil)
+            }))
+            alert.addAction(UIAlertAction(title: "Não", style: UIAlertAction.Style.cancel, handler: nil))
+            
+            // Mostra o alerta
+            self.present(alert, animated: true, completion: nil)
         }
     }
     

@@ -29,6 +29,9 @@
                                 <state key="normal" title="+">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="adicionarDenuncia:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Sb-O9-19B"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -48,11 +51,13 @@
                         <outlet property="addButton" destination="utH-0X-z4Y" id="Yim-Pw-QXD"/>
                         <outlet property="mapView" destination="Myc-ri-y50" id="JpI-KU-Zwb"/>
                         <outlet property="menuButton" destination="qiL-sh-AaX" id="Ilu-DH-YAR"/>
+                        <segue destination="xya-De-Kai" kind="show" identifier="loginSegue" id="c4v-eP-uIc"/>
+                        <segue destination="tM3-OU-08F" kind="show" identifier="denunciaSegue" id="PYA-fJ-ARp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1153" y="890"/>
+            <point key="canvasLocation" x="-2946" y="645"/>
         </scene>
         <!--Barra Lateral Table View Controller-->
         <scene sceneID="8vj-5L-zH4">
@@ -300,7 +305,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SzD-wW-UCC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2000.8" y="-1113.1934032983509"/>
+            <point key="canvasLocation" x="-828" y="-1631"/>
         </scene>
         <!--Local da denúncia-->
         <scene sceneID="316-My-4Pj">
@@ -313,22 +318,30 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="R3c-Vt-aR0">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                             </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selecione um local no mapa precionando-o por 1 segundo. " textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WW6-OQ-lK3">
+                                <rect key="frame" x="40" y="606" width="295" height="41"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.63996478873239437" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="R3c-Vt-aR0" firstAttribute="centerX" secondItem="u1Y-hl-tWf" secondAttribute="centerX" id="B56-Ol-NzF"/>
                             <constraint firstItem="R3c-Vt-aR0" firstAttribute="top" secondItem="l0p-TK-u5k" secondAttribute="top" id="FdZ-91-Kp0"/>
+                            <constraint firstAttribute="trailing" secondItem="WW6-OQ-lK3" secondAttribute="trailing" constant="40" id="QlE-mr-w6b"/>
                             <constraint firstItem="R3c-Vt-aR0" firstAttribute="bottom" secondItem="l0p-TK-u5k" secondAttribute="bottom" id="Sjb-ZN-c8y"/>
+                            <constraint firstItem="l0p-TK-u5k" firstAttribute="bottom" secondItem="WW6-OQ-lK3" secondAttribute="bottom" constant="20" id="blR-aI-PGa"/>
+                            <constraint firstItem="WW6-OQ-lK3" firstAttribute="leading" secondItem="l0p-TK-u5k" secondAttribute="leading" constant="40" id="cAc-mo-c9g"/>
                             <constraint firstItem="R3c-Vt-aR0" firstAttribute="centerY" secondItem="u1Y-hl-tWf" secondAttribute="centerY" id="e7b-TW-GKg"/>
                             <constraint firstItem="R3c-Vt-aR0" firstAttribute="trailing" secondItem="l0p-TK-u5k" secondAttribute="trailing" id="kvz-zp-gQY"/>
                             <constraint firstItem="R3c-Vt-aR0" firstAttribute="leading" secondItem="l0p-TK-u5k" secondAttribute="leading" id="m5Z-2e-x3L"/>
+                            <constraint firstItem="l0p-TK-u5k" firstAttribute="bottom" secondItem="WW6-OQ-lK3" secondAttribute="bottom" constant="20" id="zav-Id-oL9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="l0p-TK-u5k"/>
                     </view>
                     <navigationItem key="navigationItem" title="Local da denúncia" id="ELe-s8-oL5">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="reveal-icon" id="mHi-hH-qkW">
-                            <color key="tintColor" red="0.1916537880897522" green="0.048008203506469727" blue="0.29803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="próximo" id="wq4-78-3im">
                             <color key="tintColor" red="0.9999127984046936" green="1" blue="0.99988144636154175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
@@ -338,13 +351,12 @@
                     </navigationItem>
                     <connections>
                         <outlet property="mapDenView" destination="R3c-Vt-aR0" id="ygZ-Tk-a7F"/>
-                        <outlet property="menuButton" destination="mHi-hH-qkW" id="0SH-AY-SAa"/>
                         <outlet property="proximoButton" destination="wq4-78-3im" id="Z5x-U7-EDB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hr6-DG-sT8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2889" y="91"/>
+            <point key="canvasLocation" x="-2156" y="644.52773613193403"/>
         </scene>
         <!--Denuncia Table View Controller-->
         <scene sceneID="ZSB-tR-2Ms">
@@ -528,7 +540,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SOQ-1Z-kwG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3640.8000000000002" y="89.505247376311857"/>
+            <point key="canvasLocation" x="-1271" y="645"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="RIj-2r-3BM">
@@ -543,7 +555,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2iA-zj-mfE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4334" y="90"/>
+            <point key="canvasLocation" x="-364" y="645"/>
         </scene>
         <!--Reveal View Controller-->
         <scene sceneID="SWr-Tx-WB2">
@@ -562,7 +574,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nXL-ad-Km3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1113" y="-1113"/>
+            <point key="canvasLocation" x="601" y="-2387"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="XUG-Gf-a2J">
@@ -586,7 +598,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8MW-MI-IP0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1153" y="26"/>
+            <point key="canvasLocation" x="601" y="-179"/>
         </scene>
         <!--Entrar View Controller-->
         <scene sceneID="5IP-9O-gDk">
@@ -707,7 +719,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ous-dj-lGG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-167.96875" y="-1113.28125"/>
+            <point key="canvasLocation" x="-2156" y="-179"/>
         </scene>
         <!--Cadastro Table View Controller-->
         <scene sceneID="0FB-CX-JGV">
@@ -963,7 +975,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bad-gx-Uud" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-134" y="-179"/>
+            <point key="canvasLocation" x="-364" y="-179"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="RXs-mB-xlM">
@@ -1019,31 +1031,6 @@
             <point key="canvasLocation" x="-1271" y="-179"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="HTs-t5-nEA">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="86r-g5-9DD" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="q8R-CI-IlO">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="0.4823529411764706" green="0.086274509803921567" blue="0.52941176470588236" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <textAttributes key="titleTextAttributes">
-                            <color key="textColor" red="0.9999127984046936" green="1" blue="0.99988144636154175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </textAttributes>
-                        <textAttributes key="largeTitleTextAttributes">
-                            <color key="textColor" red="0.9999127984046936" green="1" blue="0.99988144636154175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </textAttributes>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="tM3-OU-08F" kind="relationship" relationship="rootViewController" id="0Sd-T3-Tmg"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0cr-8i-UJA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2889" y="-673"/>
-        </scene>
-        <!--Navigation Controller-->
         <scene sceneID="d8T-af-orr">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dog-z7-SEq" sceneMemberID="viewController">
@@ -1059,7 +1046,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fhi-No-3Cs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2889" y="-1884"/>
+            <point key="canvasLocation" x="-2156" y="-860"/>
         </scene>
     </scenes>
     <resources>
@@ -1068,7 +1055,8 @@
         <image name="reveal-icon" width="22" height="17"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="c4v-eP-uIc"/>
         <segue reference="JDe-hC-lDb"/>
-        <segue reference="5mn-im-lcz"/>
+        <segue reference="4Is-ad-57f"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -13,7 +13,6 @@ import MapKit
 class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
     @IBOutlet weak var mapDenView: MKMapView!
-    @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var proximoButton: UIBarButtonItem!
     
     let locationManager = CLLocationManager()
@@ -22,16 +21,29 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     var longitude: CLLocationDegrees = 0.0
     var cnt: Int = 0
     var localizacao: CLLocation!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         proximoButton.isEnabled = false
         
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
+
+        //locationManager.requestWhenInUseAuthorization()
         
+        let lat: CLLocationDegrees = locationManager.location!.coordinate.latitude
+        let lon: CLLocationDegrees = locationManager.location!.coordinate.longitude
+        
+        let localizacao: CLLocationCoordinate2D = CLLocationCoordinate2DMake(lat, lon)
+        
+        //Declare span of map
+        let span = MKCoordinateSpan.init(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        
+        //Set region of the map
+        let region = MKCoordinateRegion(center: localizacao, span: span)
+        self.mapDenView.setRegion(region, animated: true)
+        
+    
         self.mapDenView.delegate = self
         
         let template = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -41,20 +53,17 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         carte_indice.canReplaceMapContent = true
         self.mapDenView.add(carte_indice)
         
-        sideMenu()
-        
+        // Para capturar um ponto no mapa
         let reconhecedorGesto = UILongPressGestureRecognizer(target: self, action: #selector(DenunciaViewController.marcar(gesture:)))
-        reconhecedorGesto.minimumPressDuration = 1.0
+        reconhecedorGesto.minimumPressDuration = 0.5
         mapDenView.addGestureRecognizer(reconhecedorGesto)
-
-        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    /*
     func mapView(_ mapView: MKMapView!, rendererFor overlay: MKOverlay!) -> MKOverlayRenderer! {
         if overlay is MKTileOverlay
         {
@@ -75,25 +84,16 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         let localizacao: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
         
         //Declare span of map
-        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        let span = MKCoordinateSpan.init(latitudeDelta: 0.01, longitudeDelta: 0.01)
         
         //Set region of the map
         let region = MKCoordinateRegion(center: localizacao, span: span)
-        self.mapDenView.setRegion(region, animated: false)
+        self.mapDenView.setRegion(region, animated: true)
         //self.mapView.regionThatFits(region)
         
-    }
-    
-    func sideMenu(){
-        if self.revealViewController() != nil {
-            menuButton.target = self.revealViewController()
-            menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-        }
-    }
+    } */
     
     @objc func marcar(gesture: UIGestureRecognizer){
-
 
         if gesture.state == UIGestureRecognizerState.began {
             let pontoSelecionado = gesture.location(in: self.mapDenView)
@@ -114,6 +114,7 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
                             }
                         }
                     }
+                    
                     let anotacao = MKPointAnnotation()
                     
                     anotacao.coordinate.latitude = coordenadas.latitude
@@ -136,12 +137,11 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     }
     // Enviando o localização da denuncia para proxima view para registro
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
         if segue.identifier == "pontoMapaSegue"{
             let svc = segue.destination as! DenunciaTableViewController
-            
             svc.localizacao = localizacao
-            //print("Ola mundo")
-            //print(localizacao)
+
         }
     }
     

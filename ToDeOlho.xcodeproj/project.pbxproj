@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2F06824621FD17C200549268 /* Denuncia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F06824521FD17C200549268 /* Denuncia.swift */; };
 		2F06EE7E21EA1784003AA5BE /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F06EE7D21EA1784003AA5BE /* BaseViewController.swift */; };
+		2F1B38422205D8A1003959FF /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FEE1D6321DCC6C900A0D170 /* CoreLocation.framework */; };
 		2F40A92C21DCD77400468CFC /* EntrarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A92921DCD77400468CFC /* EntrarViewController.swift */; };
 		2F40A92D21DCD77400468CFC /* CadastroTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A92A21DCD77400468CFC /* CadastroTableViewController.swift */; };
 		2F40A93521DCECCB00468CFC /* Constantes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F40A93421DCECCB00468CFC /* Constantes.swift */; };
@@ -23,7 +24,6 @@
 		2FEE1D1E21DCC3ED00A0D170 /* DenunciaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEE1D1921DCC3EC00A0D170 /* DenunciaViewController.swift */; };
 		2FEE1D1F21DCC3ED00A0D170 /* BarraLateralTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEE1D1A21DCC3EC00A0D170 /* BarraLateralTableViewController.swift */; };
 		2FEE1D2121DCC3ED00A0D170 /* DenunciaTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEE1D1C21DCC3EC00A0D170 /* DenunciaTableViewController.swift */; };
-		2FEE1D6421DCC6C900A0D170 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FEE1D6321DCC6C900A0D170 /* CoreLocation.framework */; };
 		2FEE1E0221DCC94200A0D170 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FEE1DF521DCC93B00A0D170 /* Alamofire.framework */; };
 		2FEE1E0321DCC94200A0D170 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2FEE1DF521DCC93B00A0D170 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2FEE1E0F21DCCBA100A0D170 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FEE1E0E21DCCBA100A0D170 /* SWRevealViewController.m */; };
@@ -138,7 +138,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2FEE1D6421DCC6C900A0D170 /* CoreLocation.framework in Frameworks */,
+				2F1B38422205D8A1003959FF /* CoreLocation.framework in Frameworks */,
 				2FEE1E0221DCC94200A0D170 /* Alamofire.framework in Frameworks */,
 				43CBFC4AF375A1D769627F40 /* Pods_ToDeOlho.framework in Frameworks */,
 			);

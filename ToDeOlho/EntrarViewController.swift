@@ -28,7 +28,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
     @IBAction func entrar(_ sender: Any) {
         let parametros: Parameters = ["email": login.text!, "password": senha.text!]
         
-        Alamofire.request(Config.loginURL, method: .post, parameters: parametros).responseJSON{ response in
+        Alamofire.request(Config.URL_LOGIN, method: .post, parameters: parametros).responseJSON{ response in
             guard let json = response.result.value as? [String: Any] else{
                 print("Nao foi possivel obter o objeto de retorno como JSON from API")
                 if let error = response.result.error {
@@ -271,15 +271,15 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         let parametros: Parameters = ["email": login, "password": senha]
         var retornoBool = true
         
-        Alamofire.request(Config.loginURL, method: .post, parameters: parametros).responseJSON
+        Alamofire.request(Config.URL_LOGIN, method: .post, parameters: parametros).responseJSON
             {
                 response in switch response.result
                 {
                 case .success(let JSON):
                     let response = JSON as! NSDictionary
                     
-                    let sucesso = response["sucesso"] as? String
-                    if sucesso == "false"{
+                    let sucesso = response["sucesso"] as? Int
+                    if sucesso == 0 {
                         retornoBool = false
                     }
                 case .failure(let error):
@@ -302,7 +302,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         
         let parametros: Parameters = ["login": nomeUsuario, "senha": senha, "email": email, "nascimento": nascimento, "cpf": cpf,"nome": nome, "confia": confia, "tipo": tipo, "telefone": telefone]
         
-        Alamofire.request(Config.inserirUsuarioURL, method: .post, parameters: parametros).responseJSON{
+        Alamofire.request(Config.URL_INSERIR_USUARIO, method: .post, parameters: parametros).responseJSON{
             response in
             let statusCode = response.response?.statusCode
             print(statusCode as Any) // the status code

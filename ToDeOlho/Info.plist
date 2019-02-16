@@ -4,6 +4,10 @@
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>É necessário acesso a sua localização para o funcionamento do TôDeOlho!</string>
+	<key>NSCameraUsageDescription</key>
+	<string>É necessário acesso a sua câmera para tirar fotos para o TôDeOlho!</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>É necessário acesso a sua biblioteca de fatos para selecionar fotos para o TôDeOlho!</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

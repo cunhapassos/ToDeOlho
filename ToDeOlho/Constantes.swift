@@ -12,12 +12,19 @@ struct Constants {
     static let twitterConsumerKey: String = "1lkN9XOHRKK6WmJ3qcvS7T3BQ"
     static let twitterConsumerSecret: String = "gvCWBYyO35r37xjYCAojRfHxiVfslOU44UQufXQGoMPPADBiPF"
 }
-
+/*
 struct Config {
-    static let loginURL = "http://projetomds.herokuapp.com/app/login"
-    static let inserirUsuarioURL = "https://projetomds.herokuapp.com/app/usuarios/insert"
+    static let URL_LOGIN = "http://projetomds.herokuapp.com/app/login"
+    static let URL_INSERIR_USUARIO = "https://projetomds.herokuapp.com/app/usuarios/insert"
     static let URL_TPOS_DESORDEM = "https://projetomds.herokuapp.com/api/tipodedesordem"
     static let URL_ISERIR_DENUNCIA = "https://projetomds.herokuapp.com/api/denuncia/inserir"
+} */
+
+struct Config {
+    static let URL_LOGIN = "http://localhost:3000/app/login"
+    static let URL_INSERIR_USUARIO = "http://localhost:3000/app/usuarios/insert"
+    static let URL_TPOS_DESORDEM = "http://localhost:3000/api/tipodedesordem"
+    static let URL_ISERIR_DENUNCIA = "http://localhost:3000/api/denuncia/inserir"
 }
 
 

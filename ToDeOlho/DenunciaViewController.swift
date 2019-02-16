@@ -24,20 +24,12 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        proximoButton.isEnabled         = false
+        proximoButton.isEnabled              = false
         
-        locationManager.delegate        = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
-        
-        let lat: CLLocationDegrees = locationManager.location!.coordinate.latitude
-        let lon: CLLocationDegrees = locationManager.location!.coordinate.longitude
-        let localizacao: CLLocationCoordinate2D = CLLocationCoordinate2DMake(lat, lon)
-        let span    = MKCoordinateSpan.init(latitudeDelta: 0.07, longitudeDelta: 0.07) //Declare span of map
-        let region  = MKCoordinateRegion(center: localizacao, span: span) //Set region of the map
-        self.mapDenView.setRegion(region, animated: true)
-        
-    
+        self.locationManager.delegate        = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startUpdatingLocation()
         self.mapDenView.delegate = self
         
         let template = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -109,6 +101,17 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
             svc.localizacao = localizacao
 
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
+        
+        let userlocation:CLLocation = locations [0] as CLLocation
+        locationManager.stopUpdatingLocation()
+        
+        let location = CLLocationCoordinate2D(latitude: userlocation.coordinate.latitude, longitude: userlocation.coordinate.longitude)
+        let span = MKCoordinateSpanMake (0.0075, 0.0075)
+        let region = MKCoordinateRegion(center: location, span: span)
+        mapDenView.setRegion(region, animated: true)
     }
     
 }

@@ -26,12 +26,13 @@ class DenunciaTableViewController: UITableViewController{
     @IBOutlet weak var proximoButton: UIBarButtonItem!
     @IBOutlet weak var coordenadas: UILabel!
     
-    
     // datepicker related data
     var pickerIndexPath: IndexPath?
     var pickerVisible: Bool = false
     var tipoDenuncia = Array<String>()
     var localizacao: CLLocation!
+    var denuncia: Denuncia?
+    
     
     @IBAction func datePickerValueChanged(_ sender: Any) {
         let dateFormatter = DateFormatter()
@@ -48,9 +49,30 @@ class DenunciaTableViewController: UITableViewController{
         let strDate = dateFormatter.string(from: horaPicker.date)
         horaLabel.text = strDate
     }
-  /*
-    @IBAction func registrarDenuncia(_ sender: Any) {
+    
+    func validarUser() -> String{
+        let status = UserDefaults.standard.bool(forKey: "usuarioLogado")
         
+        if status {
+            let usuario = UserDefaults.standard.string(forKey: "usuario")
+            return usuario!
+        } else{
+            // Cria o alerta
+            let alert = UIAlertController(title: "Não há usuário logado", message: "Para cadastrar uma denuncia você precisa fazer login. Deseja fazer login agora?", preferredStyle: .alert)
+            
+            // Adiciona acoes (botoes
+            alert.addAction(UIAlertAction(title: "Sim", style: .default, handler: { action in
+                self.performSegue(withIdentifier: "loginSegue", sender: nil)
+            }))
+            alert.addAction(UIAlertAction(title: "Não", style: .cancel, handler: nil))
+            
+            // Mostra o alerta
+            self.present(alert, animated: true, completion: nil)
+            return ""
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Recuperando data do Registro
         let data = Date()
         let formatarData = DateFormatter()
@@ -63,30 +85,26 @@ class DenunciaTableViewController: UITableViewController{
         formatarData.dateFormat = "yyyy/MM/dd"
         let dataHora = formatarData.string(from: datahora_fato!)
         
-        print(dataHora)
         
-        // Recuperando Usuario
-        let usuario = UserDefaults.standard.string(forKey: "usuario")
+        self.denuncia?.setDescricao(descricao: self.desordemTipoLabel.text!)
+        self.denuncia?.setStatus(status: "Com problemas")
+        self.denuncia?.setConfiabilidade(confiabilidade: 0)
+        self.denuncia?.setDataHoraRegistro(dataHoara: hoje)
+        self.denuncia?.setDataHoraOcorreu(dataHora: dataHora)
+        self.denuncia?.setLatitude(latitude: self.localizacao.coordinate.latitude)
+        self.denuncia?.setLongitude(longitude: self.localizacao.coordinate.longitude)
         
-        //print("\(String(describing: self.desordemTipoLabel.text)), \(usuario!), \(hoje), \(dataHora), \(self.localizacao), \(self.descricaoTextView.text)")
-        /*
-        let parametros: Parameters = ["desordem": self.desordemTipoLabel.text!, "usuario": usuario!, "den_datahora_registro": hoje, "den_datahora_ocorreu": dataHora, "den_status": "Com problemas", "den_nivel_confiabilidade": "0", "den_local_latitude": self.localizacao.coordinate.latitude, "den_local_longitude": self.localizacao.coordinate.longitude, "den_descricao":
-            self.descricaoTextView.text, "den_anonimato": "1"]*/
-        let parametros: Parameters = ["desordem": self.desordemTipoLabel.text!, "usuario": usuario!, "den_datahora_registro": hoje, "den_datahora_ocorreu": dataHora, "den_status": "Com problemas", "den_nivel_confiabilidade": "0", "den_local_latitude": self.localizacao.coordinate.latitude, "den_local_longitude": self.localizacao.coordinate.longitude, "den_descricao":
-            "", "den_anonimato": "1"]
-        
-        Alamofire.request(Config.URL_ISERIR_DENUNCIA, method: .post, parameters: parametros).responseJSON{
-            response in
-            print("Success: \(response.result.isSuccess)")
-            print("Response String: \(String(describing: response.result.value))")
-        
+        if segue.identifier == "denunciaSegue"{
+            let svc = segue.destination as! DescricaoDenunciaViewController
+            svc.denuncia = self.denuncia
         }
-        
-        self.performSegue(withIdentifier: "registraDenunciaSegue", sender: nil)
-    } */
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let usuario = validarUser()
+        self.denuncia = Denuncia(usuario: usuario)
         
         datePicker.isHidden = true
         horaPicker.isHidden = true
@@ -109,7 +127,6 @@ class DenunciaTableViewController: UITableViewController{
         print(localizacao.coordinate.latitude)
         listarTiposDenuncia()
     }
-    
     
     func listarTiposDenuncia(){
         Alamofire.request(Config.URL_TPOS_DESORDEM, method: .post).responseJSON{
@@ -134,7 +151,7 @@ class DenunciaTableViewController: UITableViewController{
     }
     func getToday() -> String{
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy"
+        dateFormatter.dateFormat = "dd/MM/yy"
         let today = dateFormatter.string(from: Date(timeInterval: 0, since: Date()))
         
         return today
@@ -143,7 +160,7 @@ class DenunciaTableViewController: UITableViewController{
     func getHourNow() -> String{
         let calendar = Calendar.current
         let time = calendar.dateComponents([.hour,.minute,.second], from: Date())
-        return "\(time.hour!):\(time.minute!)"
+        return String(format:"%02i:%02i", time.hour!, time.minute!)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -190,7 +207,6 @@ class DenunciaTableViewController: UITableViewController{
             }else if indexPath.row == 2 {
                 if pickerVisible && !horaPicker.isHidden{
                     tableView.deleteRows(at: [pickerIndexPath!], with: .fade)
-                    print("Passou")
                     pickerVisible = false
                     datePicker.isHidden = true
                     horaPicker.isHidden = true

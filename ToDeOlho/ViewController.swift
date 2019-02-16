@@ -51,14 +51,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         locationManager.delegate        = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
         
-        let lat: CLLocationDegrees = locationManager.location!.coordinate.latitude
-        let lon: CLLocationDegrees = locationManager.location!.coordinate.longitude
-        let localizacao: CLLocationCoordinate2D = CLLocationCoordinate2DMake(lat, lon)
-        let span    = MKCoordinateSpan.init(latitudeDelta: 0.11, longitudeDelta: 0.11) //Declare span of map
-        let region  = MKCoordinateRegion(center: localizacao, span: span)  //Set region of the map
-        self.mapView.setRegion(region, animated: true)
-        
+        self.mapView.delegate = self
+
         /* Botão Adicionar denuncia */
         addButton.layer.masksToBounds = true
         addButton.layer.zPosition = 1
@@ -69,19 +65,15 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         addButton.layer.masksToBounds = false
         addButton.layer.cornerRadius = 4.0
         
-        self.mapView.delegate = self
-
         /* Buscando openstreetmap  */
         let template = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
         let carte_indice = MKTileOverlay(urlTemplate:template)
         
         //carte_indice.isGeometryFlipped = true
-        
         carte_indice.canReplaceMapContent = true
         self.mapView.add(carte_indice)
         
         sideMenu()
-        
         apresentarDesordens()
     }
         
@@ -89,7 +81,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    /*
+    
     func mapView(_ mapView: MKMapView!, rendererFor overlay: MKOverlay!) -> MKOverlayRenderer! {
         if overlay is MKTileOverlay
         {
@@ -100,25 +92,18 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return nil
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let localizacaoUsuario: CLLocation = locations.last!
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
         
-        // Exibição do Mapa
-        //Map centre
-        let latitude: CLLocationDegrees = localizacaoUsuario.coordinate.latitude
-        let longitude: CLLocationDegrees = localizacaoUsuario.coordinate.longitude
-        let centre = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let userlocation:CLLocation = locations [0] as CLLocation
+        locationManager.stopUpdatingLocation()
         
-        //Declare span of map
-        let span = MKCoordinateSpan(latitudeDelta: 0.007, longitudeDelta: 0.007)
+        let location = CLLocationCoordinate2D(latitude: userlocation.coordinate.latitude, longitude: userlocation.coordinate.longitude)
+        let span = MKCoordinateSpanMake (1.0, 1.0)
+        let region = MKCoordinateRegion(center: location, span: span)
         
-        //Set region of the map
-        let region = MKCoordinateRegion(center: centre, span: span)
-        self.mapView.setRegion(region, animated: true)
-        self.mapView.regionThatFits(region)
-        
+        mapView.setRegion(region, animated: true)
     }
-     */
+    
     
     func sideMenu(){
         if self.revealViewController() != nil {

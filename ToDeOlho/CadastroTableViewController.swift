@@ -45,7 +45,7 @@ class CadastroTableViewController: UITableViewController {
                         
                         let parametros: Parameters = ["login": nomeUsuario, "senha": senha, "email": email, "nascimento": nascimento, "cpf": cpf,"nome": nome, "confia": confia, "tipo": tipo, "telefone": telefone]
                         
-                        Alamofire.request(Config.URL_INSERIR_USUARIO, method: .post, parameters: parametros).responseJSON{
+                        Alamofire.request(URLs.inserirUsuario, method: .post, parameters: parametros).responseJSON{
                             response in
                             let statusCode = response.response?.statusCode
                             print(statusCode as Any) // the status code

@@ -28,7 +28,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
     @IBAction func entrar(_ sender: Any) {
         let parametros: Parameters = ["email": login.text!, "password": senha.text!]
         
-        Alamofire.request(Config.URL_LOGIN, method: .post, parameters: parametros).responseJSON{ response in
+        Alamofire.request(URLs.login, method: .post, parameters: parametros).responseJSON{ response in
             guard let json = response.result.value as? [String: Any] else{
                 print("Nao foi possivel obter o objeto de retorno como JSON from API")
                 if let error = response.result.error {
@@ -271,7 +271,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         let parametros: Parameters = ["email": login, "password": senha]
         var retornoBool = true
         
-        Alamofire.request(Config.URL_LOGIN, method: .post, parameters: parametros).responseJSON
+        Alamofire.request(URLs.login, method: .post, parameters: parametros).responseJSON
             {
                 response in switch response.result
                 {
@@ -302,7 +302,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         
         let parametros: Parameters = ["login": nomeUsuario, "senha": senha, "email": email, "nascimento": nascimento, "cpf": cpf,"nome": nome, "confia": confia, "tipo": tipo, "telefone": telefone]
         
-        Alamofire.request(Config.URL_INSERIR_USUARIO, method: .post, parameters: parametros).responseJSON{
+        Alamofire.request(URLs.inserirUsuario, method: .post, parameters: parametros).responseJSON{
             response in
             let statusCode = response.response?.statusCode
             print(statusCode as Any) // the status code

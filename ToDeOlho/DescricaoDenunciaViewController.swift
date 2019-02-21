@@ -172,9 +172,14 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
             
             let parametros: Parameters = ["usuario": denuncia?.getUsuario() ?? "", "den_status": denuncia?.getStatus() ?? "", "den_descricao": denuncia?.getDescricao() ?? "", "den_anonimato": denuncia?.getAnonimato() ?? "", "desordem": denuncia?.getDescricaoDesordem() ?? "", "den_datahora_registro": denuncia?.getDataHoraRegistro() ?? "", "den_datahora_ocorreu": denuncia?.getDataHoraOcorreu() ?? "", "den_nivel_confiabilidade": denuncia?.getConfiabilidade() ?? "", "img_denuncia_id": denuncia?.imagem ?? "", "den_local_latitude": denuncia?.getLatitide() ?? "", "den_local_longitude": denuncia?.getLlongitude() ?? ""]
             
-            print(parametros)
+            for image in self.imagens{
+                uploadImagem(image: image)
+            }
             
-            Alamofire.request(Config.URL_ISERIR_DENUNCIA, method: .post, parameters: parametros).responseJSON
+            
+            //print(parametros)
+            
+            Alamofire.request(URLs.inserirDenuncia, method: .post, parameters: parametros).responseJSON
                 {
                     response in switch response.result
                     {
@@ -186,8 +191,6 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
                             let erro = response.value(forKey: "Error")
                             print(erro ?? "")
                             self.exibirMensagem(titulo: "Ocorreu um erro!", mensagem: "Não foi possivel inserir a denúncia no nosso Banco de Dados")
-                            /* */
-                            
                             
                         } else{
                             print("Denúncia Inserida com sucesso!")
@@ -196,15 +199,14 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
                             
                             alerta.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
                                 self.performSegue(withIdentifier: "retornarMapa", sender: nil)
-                                
                             }))
                             self.present(alerta, animated: true, completion: nil)
                         }
                     case .failure(let error):
                         print("Request failed with error:\(error)")
                     }
-
-            }
+            } 
+            
         }
     }
     func exibirMensagem(titulo: String, mensagem: String) {
@@ -214,6 +216,57 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
         alerta.addAction(acaoCancelar)
         present(alerta, animated: true, completion: nil)
     }
+    
+    func uploadImagem(image: UIImage)
+    {
+        //SwiftLoader.show(title: "Loading...", animated: true)
+        
+        if !self.imagens.isEmpty{
+            if let imageData: Data = (UIImageJPEGRepresentation(image, 1.0) as Data?) {
+                
+                let URL1 = URLs.uploadImagem  // @"https://....."
+                
+                Alamofire.upload(multipartFormData: { (multipartFormData) in
+                    multipartFormData.append(imageData, withName: "image", fileName: "image.jpg", mimeType: "image/jpg")
+                
+                    
+                }, to: URL1, method: .post, encodingCompletion: {
+                    (result) in
+                    switch result {
+                    case .success(let upload, _, _):
+                        
+                        upload.responseJSON { response in
+                            
+                            //SwiftLoader.hide()
+                            print("Enviando imagem...")
+                            print(response.timeline)
+                            print("Request: \(String(describing: response.request))") // original url request
+                            
+                            print("Result: \(response.result)")                         // response serialization result
+                            
+                            if(response.error == nil){
+                                let resp = response.value as! NSDictionary
+                                let filename = resp["filename"] as! String
+                                print("Upload bem sucedido!")
+                                print("Nome do arquivo: \(filename)")
+
+                            }else{
+                                print("Error: \(String(describing: response.error))")
+                            }
+
+                        }
+                        
+                    case .failure(let encodingError):
+                        print(encodingError)
+                        //SwiftLoader.hide()
+                        //Constant.showAlert(vc: self, titleStr: "Error !", messageStr: "No Internet Connection.")
+                    }
+                })
+            }
+        }
+    }
+
+
     
 }
 
@@ -240,4 +293,6 @@ extension DescricaoDenunciaViewController:  UIImagePickerControllerDelegate, UIN
             })
         }
     }
+    
+    
 }

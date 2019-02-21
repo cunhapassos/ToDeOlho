@@ -57,7 +57,53 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2946" y="645"/>
+            <point key="canvasLocation" x="-4046" y="642"/>
+        </scene>
+        <!--Sobre View Controller-->
+        <scene sceneID="Why-As-8bP">
+            <objects>
+                <viewController id="sDE-EC-pSi" customClass="SobreViewController" customModule="ToDeOlho" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="s8c-fz-hRU">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="B4e-2a-y0W">
+                                <rect key="frame" x="35" y="145" width="345" height="284"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" red="0.79215686269999996" green="0.43137254899999999" blue="0.6588235294" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K80-Sw-n4w">
+                                <rect key="frame" x="43" y="107" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.54588896040000001" green="0.2138652503" blue="0.58757245540000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <state key="normal" title="X">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="fechar:" destination="nkb-Ys-ekL" eventType="touchUpInside" id="vTz-WF-eGS"/>
+                                    <action selector="retornarView:" destination="sDE-EC-pSi" eventType="touchUpInside" id="iA3-QZ-Wjm"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SOBRE O TÔ DE OLHO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rBf-gW-Kud">
+                                <rect key="frame" x="102" y="107" width="210" height="24"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" red="0.4823529412" green="0.086274509799999996" blue="0.52941176469999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="Ngp-1H-yK3"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dhf-R9-8QU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1149" y="-179"/>
         </scene>
         <!--Barra Lateral Table View Controller-->
         <scene sceneID="8vj-5L-zH4">
@@ -273,6 +319,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="sDE-EC-pSi" kind="show" id="hpI-4K-koR"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -304,10 +353,10 @@
                             </mapView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selecione um local no mapa precionando-o por 1 segundo. " textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WW6-OQ-lK3">
                                 <rect key="frame" x="40" y="801" width="334" height="41"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.63996478873239437" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
+                                <color key="backgroundColor" red="0.4823529412" green="0.086274509799999996" blue="0.52941176469999995" alpha="0.43450154049295775" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
+                                <color key="highlightedColor" red="0.4823529412" green="0.086274509799999996" blue="0.52941176469999995" alpha="1" colorSpace="calibratedRGB"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -341,7 +390,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Hr6-DG-sT8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2156" y="644.52773613193403"/>
+            <point key="canvasLocation" x="-2914" y="643"/>
         </scene>
         <!--Denuncia Table View Controller-->
         <scene sceneID="ZSB-tR-2Ms">
@@ -528,7 +577,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SOQ-1Z-kwG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1271.0144927536232" y="644.86607142857144"/>
+            <point key="canvasLocation" x="-2157" y="645"/>
         </scene>
         <!--Descricao Denuncia View Controller-->
         <scene sceneID="a1b-IQ-eY5">
@@ -626,17 +675,17 @@
                                 </collectionReusableView>
                             </collectionView>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eap-hu-c3N">
-                                <rect key="frame" x="347" y="466" width="51" height="31"/>
+                                <rect key="frame" x="343" y="465" width="51" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h5R-1P-fUY">
-                                <rect key="frame" x="20" y="505" width="351.5" height="11"/>
-                                <autoresizingMask key="autoresizingMask"/>
+                                <rect key="frame" x="20" y="589" width="334" height="31"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Ao registrar essa denúncia você concorda com os termos de uso do Tô de Olho.">
                                         <attributes>
                                             <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <font key="NSFont" size="9" name=".AppleSystemUIFont"/>
+                                            <font key="NSFont" size="10" name=".AppleSystemUIFont"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
@@ -651,7 +700,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zuK-hP-EMs">
-                                <rect key="frame" x="18" y="524" width="374" height="47"/>
+                                <rect key="frame" x="20" y="509" width="374" height="47"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <color key="backgroundColor" red="0.4823529412" green="0.086274509799999996" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -660,6 +709,7 @@
                                 </state>
                                 <connections>
                                     <action selector="enviarDenuncia:" destination="E8d-bt-lGX" eventType="touchUpInside" id="PU4-DM-VhJ"/>
+                                    <segue destination="Pum-Xf-6A4" kind="unwind" unwindAction="retornarTelaPrincipalWithSegue:" id="QEd-hj-rjt"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="center" fixedFrame="YES" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rf3-Te-JLy">
@@ -673,6 +723,14 @@
                                     <action selector="selectSource:" destination="E8d-bt-lGX" eventType="touchUpInside" id="AWz-wq-oiU"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wiN-Df-Xxf">
+                                <rect key="frame" x="370" y="593" width="22" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
+                                <color key="tintColor" red="0.4823529412" green="0.086274509799999996" blue="0.52941176469999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <segue destination="nkb-Ys-ekL" kind="presentation" id="v9C-Zc-oAV"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.92124956846237183" green="0.92194885015487671" blue="0.92135781049728394" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="lAG-Jk-1KH"/>
@@ -683,11 +741,58 @@
                         <outlet property="collectionView" destination="Fcw-D0-LOo" id="awU-WH-2kH"/>
                         <outlet property="descricaoTextView" destination="kfJ-c9-tbU" id="qeX-Wj-Ge1"/>
                         <outlet property="enviarButton" destination="zuK-hP-EMs" id="uJk-Vv-3WY"/>
+                        <segue destination="bge-Vy-ZzU" kind="presentation" identifier="retornarMapa" id="CRv-3K-5xA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f47-5v-hVq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Pum-Xf-6A4" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-452.17391304347831" y="643.52678571428567"/>
+            <point key="canvasLocation" x="-1271" y="645"/>
+        </scene>
+        <!--Termos De Uso View Controller-->
+        <scene sceneID="EHI-py-ogT">
+            <objects>
+                <viewController id="nkb-Ys-ekL" customClass="TermosDeUsoViewController" customModule="ToDeOlho" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ivI-0F-ll4">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="obP-DJ-Dqj">
+                                <rect key="frame" x="33" y="130" width="345" height="284"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" red="0.79215686269999996" green="0.43137254899999999" blue="0.6588235294" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UQL-k9-PuL">
+                                <rect key="frame" x="41" y="92" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.54588896036148071" green="0.2138652503490448" blue="0.58757245540618896" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <state key="normal" title="X">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="fechar:" destination="nkb-Ys-ekL" eventType="touchUpInside" id="Y1n-hF-1YS"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="TERMOS DE USO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t1w-7D-YOE">
+                                <rect key="frame" x="129" y="95" width="162" height="24"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <color key="textColor" red="0.4823529412" green="0.086274509799999996" blue="0.52941176469999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="z9t-gp-D3d"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7BC-1E-UOp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-452" y="645"/>
         </scene>
         <!--Reveal View Controller-->
         <scene sceneID="SWr-Tx-WB2">
@@ -706,7 +811,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nXL-ad-Km3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="601" y="-2387"/>
+            <point key="canvasLocation" x="506" y="-1631"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="XUG-Gf-a2J">
@@ -730,7 +835,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8MW-MI-IP0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="601" y="-179"/>
+            <point key="canvasLocation" x="343" y="-179"/>
         </scene>
         <!--Entrar View Controller-->
         <scene sceneID="5IP-9O-gDk">
@@ -1107,7 +1212,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bad-gx-Uud" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-364" y="-179"/>
+            <point key="canvasLocation" x="-452" y="-179"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="RXs-mB-xlM">
@@ -1190,6 +1295,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="c4v-eP-uIc"/>
         <segue reference="JDe-hC-lDb"/>
-        <segue reference="5mn-im-lcz"/>
+        <segue reference="CRv-3K-5xA"/>
     </inferredMetricsTieBreakers>
 </document>

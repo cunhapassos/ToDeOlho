@@ -129,7 +129,7 @@ class DenunciaTableViewController: UITableViewController{
     }
     
     func listarTiposDenuncia(){
-        Alamofire.request(Config.URL_TPOS_DESORDEM, method: .post).responseJSON{
+        Alamofire.request(URLs.tiposDesordem, method: .post).responseJSON{
             response in
             
             if let result = response.result.value as? NSArray{

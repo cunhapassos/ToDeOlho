@@ -1882,6 +1882,7 @@ NSString * const SWSegueRightIdentifier = @"sw_right";
 @end
 
 
+
 //#pragma mark - SWRevealViewControllerSegue Class
 //
 //@implementation SWRevealViewControllerSegue  // DEPRECATED

@@ -15,16 +15,16 @@ struct Constants {
 
 struct URLs {
     //static let main = "http://localhost:3000/"
-     static let main = "http://projetomds.herokuapp.com/"
+    static let main = "http://projetomds.herokuapp.com/"
     
     /// POST {login, password}
     static let login = main + "app/login"
     static let inserirUsuario = main + "app/usuarios/insert"
     static let tiposDesordem = main + "api/tipodedesordem"
-    static let inserirDenuncia = main + "api/denuncia/inserir"
+    static let inserirDenuncia = main + "api/denuncia/inserir2"
     
     /// POST {image}
-    static let uploadImagem = main + "api/denuncia/upload/imagem"
+    static let uploadImagem = main + "api/denuncia/upload/imagems"
 }
 
 

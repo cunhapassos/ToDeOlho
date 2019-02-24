@@ -125,10 +125,13 @@ class DenunciaTableViewController: UITableViewController{
         desordemTipoLabel.text = "Selecione o tipo de desordem"
         
         print(localizacao.coordinate.latitude)
-        listarTiposDenuncia()
+        
+        listarTiposDenuncia{
+            self.viewWillAppear(true)
+        }
     }
-    
-    func listarTiposDenuncia(){
+
+    func listarTiposDenuncia(completion:@escaping()->Void){
         Alamofire.request(URLs.tiposDesordem, method: .post).responseJSON{
             response in
             

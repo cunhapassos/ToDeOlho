@@ -21,6 +21,7 @@ class Denuncia {
     private var dataHoraOcorreu: String
     private var dataHoraRegistro: String
     private var descricaoDesordem: String
+    var imageFileName: [String] = []
     var imagem = 0
 
     

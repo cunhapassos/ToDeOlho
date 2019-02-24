@@ -154,59 +154,62 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
     
     /****** Função que envia o conteúdo da denúncia ao servidor ******/
     @IBAction func enviarDenuncia(_ sender: Any) {
+        
+        
         if (descricaoTextView.text == "" ) || (descricaoTextView.text == "Descreva brevemente o problema  encontrado..." ){
             self.exibirMensagem(titulo: "Descreva a denúncia", mensagem: "Dê um descrição para a denúncia")
         }else{
             enviarButton.isUserInteractionEnabled = true
             enviarButton.setTitleColor(.white, for: .normal)
             
-            denuncia?.setDescricaoDesordem(descricao: self.descricaoTextView.text)
+            self.denuncia?.setDescricaoDesordem(descricao: self.descricaoTextView.text)
             let usuario = UserDefaults.standard.string(forKey: "usuario")
-            denuncia?.setUsuaio(usuario: usuario!)
+            self.denuncia?.setUsuaio(usuario: usuario!)
 
             if anonimatoSwitch.isOn{
-                denuncia?.setAnonimato(anonimato: 1)
+                self.denuncia?.setAnonimato(anonimato: 1)
             }else{
-                denuncia?.setAnonimato(anonimato: 0)
+                self.denuncia?.setAnonimato(anonimato: 0)
             }
             
-            let parametros: Parameters = ["usuario": denuncia?.getUsuario() ?? "", "den_status": denuncia?.getStatus() ?? "", "den_descricao": denuncia?.getDescricao() ?? "", "den_anonimato": denuncia?.getAnonimato() ?? "", "desordem": denuncia?.getDescricaoDesordem() ?? "", "den_datahora_registro": denuncia?.getDataHoraRegistro() ?? "", "den_datahora_ocorreu": denuncia?.getDataHoraOcorreu() ?? "", "den_nivel_confiabilidade": denuncia?.getConfiabilidade() ?? "", "img_denuncia_id": denuncia?.imagem ?? "", "den_local_latitude": denuncia?.getLatitide() ?? "", "den_local_longitude": denuncia?.getLlongitude() ?? ""]
-            
-            for image in self.imagens{
-                uploadImagem(image: image)
-            }
-            
-            
-            //print(parametros)
-            
-            Alamofire.request(URLs.inserirDenuncia, method: .post, parameters: parametros).responseJSON
-                {
-                    response in switch response.result
+           
+            uploadImagens(){
+                while (self.denuncia?.imageFileName.count)! < 4 {
+                    self.denuncia?.imageFileName.append("")
+                }
+                
+                let parametros: Parameters = ["usuario": self.denuncia?.getUsuario() ?? "", "den_status": self.denuncia?.getStatus() ?? "", "den_descricao": self.denuncia?.getDescricao() ?? "", "den_anonimato": self.denuncia?.getAnonimato() ?? "", "desordem": self.denuncia?.getDescricaoDesordem() ?? "", "den_datahora_registro": self.denuncia?.getDataHoraRegistro() ?? "", "den_datahora_ocorreu": self.denuncia?.getDataHoraOcorreu() ?? "", "den_nivel_confiabilidade": self.denuncia?.getConfiabilidade() ?? "", "den_local_latitude": self.denuncia?.getLatitide() ?? "", "den_local_longitude": self.denuncia?.getLlongitude() ?? "", "img_nome_0": self.denuncia?.imageFileName[0] ?? "", "img_nome_1": self.denuncia?.imageFileName[1] ?? "", "img_nome_2": self.denuncia?.imageFileName[2] ?? "", "img_nome_3": self.denuncia?.imageFileName[3] ?? ""]
+                print(parametros)
+                
+                
+                Alamofire.request(URLs.inserirDenuncia, method: .post, parameters: parametros).responseJSON
                     {
-                    case .success(let JSON):
-                        let response = JSON as! NSDictionary
-                        
-                        let sucesso = response["sucesso"] as? Int
-                        if sucesso == 0 { // "0" eh o retorno equivalente a false
-                            let erro = response.value(forKey: "Error")
-                            print(erro ?? "")
-                            self.exibirMensagem(titulo: "Ocorreu um erro!", mensagem: "Não foi possivel inserir a denúncia no nosso Banco de Dados")
+                        response in switch response.result
+                        {
+                        case .success(let JSON):
+                            let response = JSON as! NSDictionary
                             
-                        } else{
-                            print("Denúncia Inserida com sucesso!")
-                            
-                            let alerta = UIAlertController(title: "Denúncia Inserida com sucesso!", message: "", preferredStyle: .alert)
-                            
-                            alerta.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
-                                self.performSegue(withIdentifier: "retornarMapa", sender: nil)
-                            }))
-                            self.present(alerta, animated: true, completion: nil)
+                            let sucesso = response["sucesso"] as? Int
+                            if sucesso == 0 { // "0" eh o retorno equivalente a false
+                                let erro = response.value(forKey: "Error")
+                                print(erro ?? "")
+                                self.exibirMensagem(titulo: "Ocorreu um erro!", mensagem: "Não foi possivel inserir a denúncia no nosso Banco de Dados")
+                                
+                            } else{
+                                print("Denúncia Inserida com sucesso!")
+                                
+                                let alerta = UIAlertController(title: "Denúncia Inserida com sucesso!", message: "", preferredStyle: .alert)
+                                
+                                alerta.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
+                                    self.performSegue(withIdentifier: "retornarMapa", sender: nil)
+                                }))
+                                self.present(alerta, animated: true, completion: nil)
+                            }
+                        case .failure(let error):
+                            print("Request failed with error:\(error)")
                         }
-                    case .failure(let error):
-                        print("Request failed with error:\(error)")
-                    }
-            } 
-            
+                }
+            }
         }
     }
     func exibirMensagem(titulo: String, mensagem: String) {
@@ -217,57 +220,61 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
         present(alerta, animated: true, completion: nil)
     }
     
-    func uploadImagem(image: UIImage)
-    {
-        //SwiftLoader.show(title: "Loading...", animated: true)
+
+    func uploadImagens(completion: @escaping() -> Void) {
         
-        if !self.imagens.isEmpty{
-            if let imageData: Data = (UIImageJPEGRepresentation(image, 1.0) as Data?) {
+        var imageData: Array<Data> = []
+        
+        for imagem in imagens{
+            imageData.append( UIImageJPEGRepresentation(imagem, 1.0)!)
+        }
+        
+        Alamofire.upload(multipartFormData: { (multipartFormData : MultipartFormData) in
+            
+            let count = self.imagens.count
+            
+            for i in 0..<count{
+                multipartFormData.append(imageData[i], withName: "image", fileName: "image.jpg", mimeType: "image/jpg")
+            }
+            print(multipartFormData)
+        }, to:URLs.uploadImagem) { (result) in
+            
+            switch result {
+            case .success(let upload, _, _):
                 
-                let URL1 = URLs.uploadImagem  // @"https://....."
-                
-                Alamofire.upload(multipartFormData: { (multipartFormData) in
-                    multipartFormData.append(imageData, withName: "image", fileName: "image.jpg", mimeType: "image/jpg")
-                
+                upload.responseJSON { response in
+                    //SwiftLoader.hide()
+                    print("Enviando imagems...")
+                    print(response.timeline)
+                    print("Request: \(String(describing: response.request))") // original url request
+                    print("Result: \(response.result)")                         // response serialization result
                     
-                }, to: URL1, method: .post, encodingCompletion: {
-                    (result) in
-                    switch result {
-                    case .success(let upload, _, _):
+                    if(response.error == nil){
+                        print("Upload bem sucedido!")
+                        let resp = response.value as? Dictionary<String, Any>
+                        guard let arquivos = resp?["files"] as? Array<Dictionary<String, Any>> else {return}
                         
-                        upload.responseJSON { response in
-                            
-                            //SwiftLoader.hide()
-                            print("Enviando imagem...")
-                            print(response.timeline)
-                            print("Request: \(String(describing: response.request))") // original url request
-                            
-                            print("Result: \(response.result)")                         // response serialization result
-                            
-                            if(response.error == nil){
-                                let resp = response.value as! NSDictionary
-                                let filename = resp["filename"] as! String
-                                print("Upload bem sucedido!")
-                                print("Nome do arquivo: \(filename)")
-
-                            }else{
-                                print("Error: \(String(describing: response.error))")
-                            }
-
+                        for arquivo in arquivos{
+                            print("Nome do arquivo: \(arquivo["filename"] ?? "")")
+                            self.denuncia?.imageFileName.append(arquivo["filename"] as! String)
                         }
                         
-                    case .failure(let encodingError):
-                        print(encodingError)
-                        //SwiftLoader.hide()
-                        //Constant.showAlert(vc: self, titleStr: "Error !", messageStr: "No Internet Connection.")
+                    }else{
+                        print("Error: \(String(describing: response.error))")
                     }
-                })
+                    completion()
+                    
+                }
+                
+            case .failure(let encodingError):
+                print(encodingError)
+                //SwiftLoader.hide()
+                //Constant.showAlert(vc: self, titleStr: "Error !", messageStr: "No Internet Connection.")
+                completion()
             }
         }
-    }
 
-
-    
+    }    
 }
 
 extension DescricaoDenunciaViewController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate{

@@ -107,7 +107,6 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         
         let userlocation:CLLocation = locations [0] as CLLocation
         locationManager.stopUpdatingLocation()
-        
         let location = CLLocationCoordinate2D(latitude: userlocation.coordinate.latitude, longitude: userlocation.coordinate.longitude)
         let span = MKCoordinateSpanMake (0.0075, 0.0075)
         let region = MKCoordinateRegion(center: location, span: span)

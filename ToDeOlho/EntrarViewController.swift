@@ -61,6 +61,10 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         }
     }
     
+    @IBAction func fechar(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

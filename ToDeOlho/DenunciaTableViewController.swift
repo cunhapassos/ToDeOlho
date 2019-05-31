@@ -115,7 +115,7 @@ class DenunciaTableViewController: UITableViewController{
         tipoPicker.dataSource = self
         tipoPicker.delegate = self
         
-//        descricaoTextView.delegate = self
+        // descricaoTextView.delegate = self
         let latitude    = String(self.localizacao.coordinate.latitude)
         let longitude   = String(self.localizacao.coordinate.longitude)
         

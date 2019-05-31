@@ -8,10 +8,8 @@
 
 import UIKit
 
-
 class BarraLateralTableViewController: UITableViewController{
 
-    
     @IBOutlet weak var nomeUsuarioLabel: UILabel!
     @IBOutlet weak var profile: UIImageView!
     

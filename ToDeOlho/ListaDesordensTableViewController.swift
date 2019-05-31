@@ -1,20 +1,20 @@
 //
-//  SobreViewController.swift
+//  ListaDesordensViewController.swift
 //  ToDeOlho
 //
-//  Created by Paulo Passos on 16/02/19.
+//  Created by Paulo Passos on 30/05/19.
 //  Copyright © 2019 paulopassos. All rights reserved.
 //
 
 import UIKit
 
-class SobreViewController: UIViewController {
-
+class ListaDesordensTableViewController: UITableViewController {
+    
     @IBOutlet weak var menuButton: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
-        sideMenu()
-       
+
+       sideMenu()
     }
     
     func sideMenu(){
@@ -25,6 +25,5 @@ class SobreViewController: UIViewController {
             self.revealViewController()?.rearViewRevealWidth = 240
         }
     }
-    
 
 }

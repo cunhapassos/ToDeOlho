@@ -12,10 +12,13 @@ struct URLs {
     
     /// POST {login, password}
     static let login            = main + "app/login"
-    static let denuncias        = main + "api/denuncias/coordsA"
+    //static let denuncias        = main + "api/denuncias/coordsA"
+    static let denuncias        = main + "api/denuncias/listadedenuncias"
+    
     static let tiposDesordem    = main + "api/tipodedesordem"
     static let inserirUsuario   = main + "app/usuarios/insert"
     static let inserirDenuncia  = main + "api/denuncia/inserir2"
+    static let listaDenuncias   = main + ""
     
     /// POST {image}
     static let uploadImagem     = main + "api/denuncia/upload/imagems"

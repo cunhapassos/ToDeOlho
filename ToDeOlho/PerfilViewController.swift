@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SVProgressHUD
+
 
 class PerfilViewController: UIViewController {
     
@@ -15,6 +17,7 @@ class PerfilViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         sideMenu()
+        SVProgressHUD.show(withStatus: "Carregando...")
     }
     
     func sideMenu(){
@@ -25,5 +28,9 @@ class PerfilViewController: UIViewController {
             self.revealViewController()?.rearViewRevealWidth = 240
         }
     }
+    @IBAction func stopSV(_ sender: Any) {
+        SVProgressHUD.dismiss()
+    }
+    
 
 }

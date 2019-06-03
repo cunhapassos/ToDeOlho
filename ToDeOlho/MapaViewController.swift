@@ -8,6 +8,7 @@
 import UIKit
 import MapKit
 import Alamofire
+import SVProgressHUD
 
 class MapaViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
@@ -15,6 +16,7 @@ class MapaViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     @IBOutlet weak var menuButton: UIBarButtonItem!
     @IBOutlet weak var addButton: UIButton!
     
+    var listaDenuncias: [Denuncia] = []
     let locationManager = CLLocationManager()
     var cnt: Int = 0
     
@@ -37,17 +39,40 @@ class MapaViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         apresentarDesordens()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        if !CheckInternet.Connection(){
+            self.exibirMensagem(titulo: "Erro de Conexão", mensagem: "O aparelho está sem conexão com a internet! E não é possivel carregar as desordens no mapa")
+        }
+    }
+    
+    func exibirMensagem(titulo: String, mensagem: String) {
+        let alerta = UIAlertController(title: titulo, message: mensagem, preferredStyle: .alert)
+        let acaoCancelar = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        
+        alerta.addAction(acaoCancelar)
+        present(alerta, animated: true, completion: nil)
+    }
+    
     fileprivate func apresentarDesordens() {
-        Alamofire.request(URLs.denuncias, method: .get).responseJSON{
+        SVProgressHUD.show(withStatus: "Carregando...")
+        
+        Alamofire.request(URLs.denuncias, method: .get).validate().responseJSON{
             response in
-            if let result = response.result.value as? NSArray{
-                for key in result{
-                    let key = key as! NSDictionary
-                    let lat = key["st_x"]
-                    let lon = key["st_y"]
-                    let titulo = key["des_descricao"] as! String
-                    let latitude: CLLocationDegrees = lat! as! CLLocationDegrees
-                    let longitude: CLLocationDegrees = lon! as! CLLocationDegrees
+            guard let data = response.data else{return}
+            
+            do{
+                let decoder  = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
+                self.listaDenuncias = try! decoder.decode([Denuncia].self, from: data)
+                
+                for key in self.listaDenuncias{
+                    let lat = key.latitude
+                    let lon = key.longitude
+                    let titulo = key.des_descricao
+                    
+                    let latitude: CLLocationDegrees = lat
+                    print(latitude)
+                    let longitude: CLLocationDegrees = lon
                     let ponto: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
                     let anotacao = MKPointAnnotation()
                     
@@ -55,8 +80,17 @@ class MapaViewController: UIViewController, MKMapViewDelegate, CLLocationManager
                     anotacao.title = titulo
                     self.mapView.addAnnotation(anotacao)
                 }
+            } catch DecodingError.dataCorrupted(let context) {
+                print(context.debugDescription)
+            } catch DecodingError.keyNotFound(let codingKey, let context) {
+                print("Key: \(codingKey). \(context.debugDescription)")
+            } catch DecodingError.typeMismatch(_, let context) {
+                print(context.debugDescription)
+            } catch {
+                print(error.localizedDescription)
             }
         }
+        SVProgressHUD.dismiss()
     }
     
     fileprivate func configurarAddButton() {

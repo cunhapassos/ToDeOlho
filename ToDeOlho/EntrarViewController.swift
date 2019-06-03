@@ -48,8 +48,12 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
                 UserDefaults.standard.set(self.senha.text!, forKey: "senha")
                 UserDefaults.standard.set(true, forKey: "usuarioLogado")
                 
-                // Indo para tela princiapal
-                self.performSegue(withIdentifier: "loginSegue", sender: nil)
+                if let navigation = self.navigationController{
+                    navigation.popToRootViewController(animated: true)
+                } else{
+                    self.dismiss(animated: true, completion: nil)
+                }
+
             }
             else{
                 print("Senha ou email errado")
@@ -77,7 +81,10 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
             print(logado!)
             print(usuario!)
             
-            self.performSegue(withIdentifier: "loginSegue", sender: nil)
+            if let navigation = self.navigationController{
+                navigation.popToRootViewController(animated: true)
+            }
+
         }
         
         loginButton.readPermissions = ["public_profile", "email"]
@@ -125,7 +132,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
             print("User email address is "+email!+"")
             
             if self.consultarUsuario(login: user.profile.email, senha: user.userID) {
-                //print("NAO CADASTRADO")
+                print("NAO CADASTRADO")
                 self.cadastrarUsuario(login: user.profile.email, senha: user.userID, nome: user.profile.name)
             }
             
@@ -138,7 +145,12 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
             labelError.text = "Profile : "+fullName!+""
             
             
-            self.performSegue(withIdentifier: "loginSegue", sender: nil)
+            //self.performSegue(withIdentifier: "loginSegue", sender: nil)
+            if let navigation = self.navigationController{
+                navigation.popToRootViewController(animated: true)
+            } else{
+                self.dismiss(animated: true, completion: nil)
+            }
             
             if(user.profile.hasImage){
                 URLSession.shared.dataTask(with: NSURL(string: user.profile.imageURL(withDimension: 400).absoluteString)! as URL, completionHandler: { (data, response, error) -> Void in
@@ -256,7 +268,12 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
                 })
                 
             }).resume()
-            self.performSegue(withIdentifier: "loginSegue", sender: nil)
+            //self.performSegue(withIdentifier: "loginSegue", sender: nil)
+            if let navigation = self.navigationController{
+                navigation.popToRootViewController(animated: true)
+            } else{
+                self.dismiss(animated: true, completion: nil)
+            }
         }
         
         hideProgressIndicator()

@@ -7,16 +7,12 @@
 //
 
 import UIKit
-import Alamofire
 import MapKit
+import Alamofire
+import SVProgressHUD
 
 class DenunciaTableViewController: UITableViewController{
 
-    /* COLOCAR URL COMO UserDefaults.standard */
-    //let URL_TPOS_DESORDEM = "http://localhost:3000/api/tipodedesordem"
-    //let URL_ISERIR_DENUNCIA = "http://localhost:3000/api/denuncia/inserir"
-
-    //@IBOutlet weak var descricaoTextView: UITextView!
     @IBOutlet weak var dataLabel: UILabel!
     @IBOutlet weak var horaLabel: UILabel!
     @IBOutlet weak var desordemTipoLabel: UILabel!
@@ -31,6 +27,7 @@ class DenunciaTableViewController: UITableViewController{
     var pickerVisible: Bool = false
     var tipoDenuncia = Array<String>()
     var localizacao: CLLocation!
+
     var denuncia: Denuncia?
     
     
@@ -74,6 +71,8 @@ class DenunciaTableViewController: UITableViewController{
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Recuperando data do Registro
+        let usuario = UserDefaults.standard.string(forKey: "usuario")
+        //denuncia = Denuncia(usuario: usuario!)
         let data = Date()
         let formatarData = DateFormatter()
         formatarData.dateFormat = "yyyy/MM/dd"
@@ -84,27 +83,31 @@ class DenunciaTableViewController: UITableViewController{
         let datahora_fato = formatarData.date(from: self.dataLabel.text!)
         formatarData.dateFormat = "yyyy/MM/dd"
         let dataHora = formatarData.string(from: datahora_fato!)
+       
         
+
+        self.denuncia?.den_status = "Com problemas"
         
-        self.denuncia?.setDescricao(descricao: self.desordemTipoLabel.text!)
-        self.denuncia?.setStatus(status: "Com problemas")
-        self.denuncia?.setConfiabilidade(confiabilidade: 0)
-        self.denuncia?.setDataHoraRegistro(dataHoara: hoje)
-        self.denuncia?.setDataHoraOcorreu(dataHora: dataHora)
-        self.denuncia?.setLatitude(latitude: self.localizacao.coordinate.latitude)
-        self.denuncia?.setLongitude(longitude: self.localizacao.coordinate.longitude)
+        self.denuncia?.den_descricao = self.desordemTipoLabel.text!
+        self.denuncia?.den_status = "Com problemas"
+        self.denuncia?.den_nivel_confiabilidade = 0
+        self.denuncia?.den_datahora_registro = hoje
+        self.denuncia?.den_datahora_ocorreu = dataHora
+        self.denuncia?.latitude = self.localizacao.coordinate.latitude
+        self.denuncia?.longitude = self.localizacao.coordinate.longitude 
         
         if segue.identifier == "denunciaSegue"{
             let svc = segue.destination as! DescricaoDenunciaViewController
             svc.denuncia = self.denuncia
+            print(self.denuncia?.den_status as! String)
+            print(self.denuncia?.den_datahora_registro as! String)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let usuario = validarUser()
-        self.denuncia = Denuncia(usuario: usuario)
+        var usuario = validarUser()
         
         datePicker.isHidden = true
         horaPicker.isHidden = true
@@ -124,34 +127,43 @@ class DenunciaTableViewController: UITableViewController{
         horaLabel.text = getHourNow()
         desordemTipoLabel.text = "Selecione o tipo de desordem"
         
-        print(localizacao.coordinate.latitude)
         
         listarTiposDenuncia{
             self.viewWillAppear(true)
         }
     }
-
+    
     func listarTiposDenuncia(completion:@escaping()->Void){
-        Alamofire.request(URLs.tiposDesordem, method: .post).responseJSON{
-            response in
-            
-            if let result = response.result.value as? NSArray{
+        SVProgressHUD.show(withStatus: "Carregando...")
+        Alamofire.request(URLs.tiposDesordem, method: .post).validate().responseJSON{
+            response in switch response.result{
+            case .success(let json):
+                let result = json as! NSArray
                 for key in result{
                     let key = key as! NSDictionary
                     let valor = key["des_descricao"] as! String
                     self.tipoDenuncia.append(valor)
                 }
-                // Teste: Fase de desenvolvimento
                 for key in self.tipoDenuncia{
                     print(key)
                 }
-            }else{
-                //Tratar erro de requisição
+            case .failure(let error):
+                if (error._code == -1009) {
+                    self.exibirMensagem(titulo: "Erro", mensagem: "Sem conexão com a Internet!!!")
+                }
             }
-            print("Success: \(response.result.isSuccess)")
-            print("Response String: \(String(describing: response.result.value))")
         }
+        SVProgressHUD.dismiss()
     }
+    
+    func exibirMensagem(titulo: String, mensagem: String) {
+        let alerta = UIAlertController(title: titulo, message: mensagem, preferredStyle: .alert)
+        let acaoCancelar = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        
+        alerta.addAction(acaoCancelar)
+        present(alerta, animated: true, completion: nil)
+    }
+    
     func getToday() -> String{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yy"

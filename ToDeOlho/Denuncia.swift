@@ -5,104 +5,71 @@
 //  Created by Paulo Passos on 26/01/19.
 //  Copyright © 2019 paulopassos. All rights reserved.
 //
-
+import MapKit
 import Foundation
 
-class Denuncia {
-
-    private var idImagem: Int
-    private var anonimato: Int
-    private var status: String
-    private var usuario: String
-    private var latitude: Double
-    private var longitude: Double
-    private var descricao: String
-    private var confiabilidade: Int
-    private var dataHoraOcorreu: String
-    private var dataHoraRegistro: String
-    private var descricaoDesordem: String
-    var imageFileName: [String] = []
-    var imagem = 0
-
-    
-    init(usuario: String) {
-        self.idImagem   = 0
-        self.anonimato  = 0
-        self.status     = "Com problemas"
-        self.usuario    = usuario
-        self.descricao  = ""
-        self.confiabilidade     = 0
-        self.dataHoraOcorreu    = "01/01/2019"
-        self.dataHoraRegistro   = "01/01/2019"
-        self.descricaoDesordem  = ""
-        self.latitude = 0.0
-        self.longitude = 0.0
+struct Denuncia{
+    var usu_nome: String
+    var den_anonimato: Int // Verificar depois a conversão de Int para Bool
+    var den_status: String
+    var den_idusuario: Int
+    var den_iddenuncia: Int
+    var den_descricao: String
+    var des_descricao: String
+    var den_datahora_ocorreu: String
+    var den_datahora_solucao: String?
+    var den_datahora_registro: String
+    var latitude: Double
+    var longitude: Double
+    var den_nivel_confiabilidade: Int
+}
+extension Denuncia: Codable{
+    private enum CodingKeys: String, CodingKey {
+        case usu_nome
+        case den_anonimato
+        case den_status
+        case den_idusuario
+        case den_iddenuncia
+        case den_descricao
+        case des_descricao
+        case den_datahora_ocorreu
+        case den_datahora_solucao
+        case den_datahora_registro
+        case latitude
+        case longitude
+        case den_nivel_confiabilidade
     }
     
-    func setImagem(idImagem: Int){
-        self.idImagem = idImagem
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        usu_nome = try container.decode(String.self, forKey: .usu_nome)
+        den_anonimato = try container.decode(Int.self, forKey: .den_anonimato)
+        den_status = try container.decode(String.self, forKey: .den_status)
+        den_idusuario = try container.decode(Int.self, forKey: .den_idusuario)
+        den_iddenuncia = try container.decode(Int.self, forKey: .den_iddenuncia)
+        den_descricao = try container.decode(String.self, forKey: .den_descricao)
+        des_descricao = try container.decode(String.self, forKey: .des_descricao)
+        den_datahora_ocorreu = try container.decode(String.self, forKey: .den_datahora_ocorreu)
+        den_datahora_solucao = try container.decode(String?.self, forKey: .den_datahora_solucao)
+        den_datahora_registro = try container.decode(String.self, forKey: .den_datahora_registro)
+        latitude = try container.decode(Double.self, forKey: .latitude)
+        longitude = try container.decode(Double.self, forKey: .longitude)
+        den_nivel_confiabilidade = try container.decode(Int.self, forKey: .den_nivel_confiabilidade)
     }
-    func getImagem() -> Int{
-        return self.idImagem
-    }
-    func setAnonimato(anonimato: Int){
-        self.anonimato = anonimato
-    }
-    func  getAnonimato() -> Int {
-        return self.anonimato
-    }
-    func setStatus(status: String) {
-        self.status = status
-    }
-    func getStatus() -> String {
-        return self.status
-    }
-    func setUsuaio(usuario: String) {
-        self.usuario = usuario
-    }
-    func getUsuario() -> String {
-        return self.usuario
-    }
-    func setDescricao(descricao: String) {
-        self.descricao = descricao
-    }
-    func getDescricao() -> String {
-        return self.descricao
-    }
-    func setConfiabilidade(confiabilidade: Int) {
-        self.confiabilidade = confiabilidade
-    }
-    func getConfiabilidade() -> Int {
-        return self.confiabilidade
-    }
-    func setDataHoraOcorreu(dataHora: String) {
-        self.dataHoraOcorreu = dataHora
-    }
-    func getDataHoraOcorreu() -> String {
-        return self.dataHoraOcorreu
-    }
-    func setDataHoraRegistro(dataHoara: String) {
-        self.dataHoraRegistro = dataHoara
-    }
-    func getDataHoraRegistro() -> String {
-        return self.dataHoraRegistro
-    }
-    func setDescricaoDesordem(descricao: String) {
-        self.descricaoDesordem = descricao
-    }
-    func getDescricaoDesordem() -> String {
-        return self.descricaoDesordem
-    }
-    func setLatitude(latitude: Double) {
-        self.latitude = latitude
-    }
-    func getLatitide() -> Double {
-        return self.latitude
-    }
-    func setLongitude(longitude: Double) {
-        self.longitude = longitude
-    }
-    func getLlongitude() -> Double {
-        return self.longitude
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(usu_nome, forKey: .usu_nome)
+        try container.encode(den_anonimato, forKey: .den_anonimato)
+        try container.encode(den_status, forKey: .den_status)
+        try container.encode(den_idusuario, forKey: .den_idusuario)
+        try container.encode(den_iddenuncia, forKey: .den_iddenuncia)
+        try container.encode(den_descricao, forKey: .den_descricao)
+        try container.encode(des_descricao, forKey: .des_descricao)
+        try container.encode(den_datahora_ocorreu, forKey: .den_datahora_ocorreu)
+        try container.encode(den_datahora_solucao, forKey: .den_datahora_solucao)
+        try container.encode(den_datahora_registro, forKey: .den_datahora_registro)
+        try container.encode(latitude, forKey: .latitude)
+        try container.encode(longitude, forKey: .longitude)
+        try container.encode(den_nivel_confiabilidade, forKey: .den_nivel_confiabilidade)
     }
 }

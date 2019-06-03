@@ -18,6 +18,7 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
     @IBOutlet weak var anonimatoSwitch: UISwitch!
     
     var imagens: [UIImage] = []
+    var imageFileName: [String] = []
     var denuncia: Denuncia?
     
     override func viewDidLoad() {
@@ -43,6 +44,7 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
         
         //enviarButton.isEnabled = false
         enviarButton.setTitleColor(UIColor.lightGray, for: .normal)
+        
     }
     
     /* Função relacionadas ao placeholder do descricaoTextView */
@@ -162,23 +164,22 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
             enviarButton.isUserInteractionEnabled = true
             enviarButton.setTitleColor(.white, for: .normal)
             
-            self.denuncia?.setDescricaoDesordem(descricao: self.descricaoTextView.text)
+            self.denuncia?.des_descricao = self.descricaoTextView.text
             let usuario = UserDefaults.standard.string(forKey: "usuario")
-            self.denuncia?.setUsuaio(usuario: usuario!)
+            self.denuncia?.usu_nome = usuario!
 
             if anonimatoSwitch.isOn{
-                self.denuncia?.setAnonimato(anonimato: 1)
+                self.denuncia?.den_anonimato = 1
             }else{
-                self.denuncia?.setAnonimato(anonimato: 0)
+                self.denuncia?.den_anonimato = 0
             }
             
-           
             uploadImagens(){
-                while (self.denuncia?.imageFileName.count)! < 4 {
-                    self.denuncia?.imageFileName.append("")
-                }
+                while (self.imageFileName.count) < 4 {
+                    self.imageFileName.append("")
+            }
                 
-                let parametros: Parameters = ["usuario": self.denuncia?.getUsuario() ?? "", "den_status": self.denuncia?.getStatus() ?? "", "den_descricao": self.denuncia?.getDescricao() ?? "", "den_anonimato": self.denuncia?.getAnonimato() ?? "", "desordem": self.denuncia?.getDescricaoDesordem() ?? "", "den_datahora_registro": self.denuncia?.getDataHoraRegistro() ?? "", "den_datahora_ocorreu": self.denuncia?.getDataHoraOcorreu() ?? "", "den_nivel_confiabilidade": self.denuncia?.getConfiabilidade() ?? "", "den_local_latitude": self.denuncia?.getLatitide() ?? "", "den_local_longitude": self.denuncia?.getLlongitude() ?? "", "img_nome_0": self.denuncia?.imageFileName[0] ?? "", "img_nome_1": self.denuncia?.imageFileName[1] ?? "", "img_nome_2": self.denuncia?.imageFileName[2] ?? "", "img_nome_3": self.denuncia?.imageFileName[3] ?? ""]
+                let parametros: Parameters = ["usuario": self.denuncia?.usu_nome ?? "", "den_status": self.denuncia?.den_status ?? "", "den_descricao": self.denuncia?.den_descricao ?? "", "den_anonimato": self.denuncia?.den_anonimato ?? "", "desordem": self.denuncia?.des_descricao ?? "", "den_datahora_registro": self.denuncia?.den_datahora_registro ?? "", "den_datahora_ocorreu": self.denuncia?.den_datahora_ocorreu ?? "", "den_nivel_confiabilidade": self.denuncia?.den_nivel_confiabilidade ?? "", "den_local_latitude": self.denuncia?.latitude ?? "", "den_local_longitude": self.denuncia?.longitude ?? "", "img_nome_0": self.imageFileName[0] , "img_nome_1": self.imageFileName[1] , "img_nome_2": self.imageFileName[2] , "img_nome_3": self.imageFileName[3] ]
                 print(parametros)
                 
                 
@@ -201,17 +202,24 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
                                 let alerta = UIAlertController(title: "Denúncia Inserida com sucesso!", message: "", preferredStyle: .alert)
                                 
                                 alerta.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
-                                    self.performSegue(withIdentifier: "retornarMapa", sender: nil)
+                                    //self.performSegue(withIdentifier: "retornarMapa", sender: nil)
+                                    if let navigation = self.navigationController{
+                                        navigation.popToRootViewController(animated: true)
+                                    }
                                 }))
                                 self.present(alerta, animated: true, completion: nil)
                             }
                         case .failure(let error):
-                            print("Request failed with error:\(error)")
+                            if (error._code == -1009) {
+                                 print("Request failed with error:\(error)")
+                                self.exibirMensagem(titulo: "Erro", mensagem: "Sem conexão com a Internet!!!")
+                            }
                         }
                 }
             }
         }
     }
+    
     func exibirMensagem(titulo: String, mensagem: String) {
         let alerta = UIAlertController(title: titulo, message: mensagem, preferredStyle: .alert)
         let acaoCancelar = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
@@ -256,7 +264,7 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
                         
                         for arquivo in arquivos{
                             print("Nome do arquivo: \(arquivo["filename"] ?? "")")
-                            self.denuncia?.imageFileName.append(arquivo["filename"] as! String)
+                            self.imageFileName.append(arquivo["filename"] as! String)
                         }
                         
                     }else{

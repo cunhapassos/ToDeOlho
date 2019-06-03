@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
- platform :ios, '9.0'
+ platform :ios, '10.0'
 
 target 'ToDeOlho' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
@@ -8,7 +8,8 @@ target 'ToDeOlho' do
 pod 'FBSDKLoginKit', '~> 4.39.1'
 pod 'GoogleSignIn'
 pod ‘Alamofire’
+pod 'SVProgressHUD'
 
-  #pod 'TwitterKit'
+ #pod 'TwitterKit'
 
 end

@@ -66,7 +66,7 @@ class BarraLateralViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell : cellTableViewCell = tableView.dequeueReusableCell(withIdentifier: "menuTableViewCell") as! cellTableViewCell
+        let cell : MenuTableViewCell = tableView.dequeueReusableCell(withIdentifier: "menuTableViewCell") as! MenuTableViewCell
         
         cell.optionMenu.text = menuOptions[indexPath.row]
         
@@ -79,9 +79,25 @@ class BarraLateralViewController: UIViewController, UITableViewDelegate, UITable
         
         return cell
     }
-    
+    /*
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.performSegue(withIdentifier: menuOptions[indexPath.row], sender: self)
+    } */
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        // ...
+        let dashboardNC = revealViewController().frontViewController as! UINavigationController
+        _ = revealViewController().frontViewController as! UINavigationController
+        
+            // Instantiate controller from story board
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let controller = sb.instantiateViewController(withIdentifier: menuOptions[indexPath.row])
+        dashboardNC.popViewController(animated: true)
+        dashboardNC.pushViewController(controller, animated: false)
+    
+        // Push it with SWRevealViewController
+        revealViewController().pushFrontViewController(dashboardNC, animated: true)
+        
     }
-
 }

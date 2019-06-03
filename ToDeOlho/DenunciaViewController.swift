@@ -45,6 +45,20 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         mapDenView.addGestureRecognizer(reconhecedorGesto)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        if !CheckInternet.Connection(){
+            self.exibirMensagem(titulo: "Erro de Conexão", mensagem: "O aparelho está sem conexão com a internet!")
+        }
+    }
+    
+    func exibirMensagem(titulo: String, mensagem: String) {
+        let alerta = UIAlertController(title: titulo, message: mensagem, preferredStyle: .alert)
+        let acaoCancelar = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        
+        alerta.addAction(acaoCancelar)
+        present(alerta, animated: true, completion: nil)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -88,7 +102,9 @@ class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationMan
                     self.proximoButton.isEnabled = true
                 }
                 else{
-                    print(erro!)
+                    if (erro!._code == 2){
+                        self.exibirMensagem(titulo: "Erro de Conexão", mensagem: "O aparelho está sem conexão com a internet!")
+                    }
                 }
             })
         }

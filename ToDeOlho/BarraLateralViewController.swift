@@ -62,7 +62,12 @@ class BarraLateralViewController: UIViewController, UITableViewDelegate, UITable
             nomeUsuarioLabel.text = UserDefaults.standard.string(forKey: "usuario")
             
             let imgData = UserDefaults.standard.data(forKey: "perfil")
-            self.profile.image = UIImage(data: imgData!)
+            if imgData != nil{
+                self.profile.image = UIImage(data: imgData!)
+            }
+            else{
+                self.profile.image = UIImage(named: "logo.png")
+            }
             self.btControle.setTitle("Sair", for: .normal)
         }
         else{

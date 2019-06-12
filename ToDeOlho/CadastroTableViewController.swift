@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-
+import CryptoSwift
 
 class CadastroTableViewController: UITableViewController {
 
@@ -19,17 +19,17 @@ class CadastroTableViewController: UITableViewController {
     
     @IBOutlet weak var nomeTextField: UITextField!
     @IBOutlet weak var nascimentoLabel: UILabel!
+    
     @IBOutlet weak var dataNascimentoDatePicker: UIDatePicker!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var senhaTextField: UITextField!
     @IBOutlet weak var senhaConfirmarTextField: UITextField!
     @IBOutlet weak var cadastrarButton: UIButton!
-    @IBOutlet weak var cpfTextField: UITextField!
     
     @IBAction func cadastrar(_ sender: Any) {
         if let email = self.emailTextField.text{
-            if let senha = self.senhaTextField.text{
-                if let confirmar = self.senhaConfirmarTextField.text{
+            let senha = self.senhaTextField.text!.md5()
+            let confirmar = self.senhaConfirmarTextField.text!.md5()
                     if senha == confirmar{
                         print("Senhas iguais!")
                         
@@ -37,7 +37,7 @@ class CadastroTableViewController: UITableViewController {
                         print(nascimento)
                         let nomeUsuario = self.emailTextField.text!
                         let nome = nomeTextField.text!
-                        let cpf = cpfTextField.text!
+                        let cpf = ""
                         print(cpf)
                         let confia = 0
                         let tipo = 2
@@ -54,9 +54,21 @@ class CadastroTableViewController: UITableViewController {
                             print("Response String: \(String(describing: response.result.value))")
    
                             if statusCode == 200 {
-                                //CHAMar mensagem de usuario criado com sucesso
-                                // Indo para tela princiapal
-                                self.performSegue(withIdentifier: "inserirSegue", sender: nil)
+                                UserDefaults.standard.set(nomeUsuario, forKey: "usuario")
+                                UserDefaults.standard.set(email, forKey: "nomeUsuario")
+                                UserDefaults.standard.set(senha, forKey: "senha")
+                                UserDefaults.standard.set(true, forKey: "usuarioLogado")
+                                
+                                let alerta = UIAlertController(title: "Cadastro realizado", message: "Usuário cadastrado com sucesso", preferredStyle: .alert)
+                                
+                                alerta.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
+                                    //self.performSegue(withIdentifier: "retornarMapa", sender: nil)
+                                    if let navigation = self.navigationController{
+                                        navigation.popToRootViewController(animated: true)
+                                    }
+                                }))
+                                self.present(alerta, animated: true, completion: nil)
+                                
                             }
                             else{
                                 // Emitir mensagem de ERRO
@@ -66,8 +78,8 @@ class CadastroTableViewController: UITableViewController {
                     }else{
                         self.exibirMensagem(titulo: "Dados incorretos", mensagem: "As senhas não estão iguais, digite novamente.")
                     }
-                }
-            }
+            
+            
         }
     }
     @IBAction func escolherData(_ sender: Any) {
@@ -89,7 +101,16 @@ class CadastroTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       let tap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(DismissKeyboard))
+        tap.cancelsTouchesInView = false
+       view.addGestureRecognizer(tap)
+        
         nascimentoLabel.text = getToday()
+    }
+    
+    @objc func DismissKeyboard(){
+        view.endEditing(true)
+        
     }
     
     func getToday() -> String{
@@ -103,7 +124,7 @@ class CadastroTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 7
+            return 5
         case 1:
             return pickerVisible ? 2 : 1
         default:

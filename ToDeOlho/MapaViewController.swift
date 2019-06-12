@@ -14,9 +14,16 @@ class MapaViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var filterButton: UIBarButtonItem!
     @IBOutlet weak var addButton: UIButton!
     
-    var listaDenuncias: [Denuncia] = []
+    var status: String?
+    var dataIni: String?
+    var dataFim: String?
+    var natureza: String?
+    
+    var barraLateral: BarraLateralViewController?
+
     let locationManager = CLLocationManager()
     var cnt: Int = 0
     
@@ -34,15 +41,33 @@ class MapaViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         carte_indice.canReplaceMapContent   = true
         self.mapView.add(carte_indice)
         
-        sideMenu()
+        
         configurarAddButton()
-        apresentarDesordens()
+        
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        self.barraLateral = sb.instantiateViewController(withIdentifier: "barraLateral") as? BarraLateralViewController
+        self.barraLateral?.mapViewController = self
+        sideMenu()
+        
+        listarTiposDenuncia { (tiposDenuncias) in
+            self.barraLateral?.tipoDenuncia = tiposDenuncias
+        }
+
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.barTintColor =  UIColor(red: 0.48, green: 0.09, blue: 0.53, alpha: 1)
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController!.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         if !CheckInternet.Connection(){
-            self.exibirMensagem(titulo: "Erro de Conexão", mensagem: "O aparelho está sem conexão com a internet! E não é possivel carregar as desordens no mapa")
+            self.exibirMensagem(titulo: "Erro de Conexão", mensagem: "O aparelho está sem conexão com a internet! E não é possivel carregar o mapa de desordens")
         }
+        
     }
     
     func exibirMensagem(titulo: String, mensagem: String) {
@@ -52,45 +77,124 @@ class MapaViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         alerta.addAction(acaoCancelar)
         present(alerta, animated: true, completion: nil)
     }
-    
-    fileprivate func apresentarDesordens() {
-        SVProgressHUD.show(withStatus: "Carregando...")
-        
+
+    func recuperarTodasDesordens(completion: @escaping([Denuncia]) -> Void) {
         Alamofire.request(URLs.denuncias, method: .get).validate().responseJSON{
             response in
-            guard let data = response.data else{return}
             
-            do{
+            switch response.result{
+            case .success:
+                guard let data = response.data else{
+                    // PRINT ALERT
+                    return
+                }
                 let decoder  = JSONDecoder()
                 decoder.dateDecodingStrategy = .iso8601
-                self.listaDenuncias = try! decoder.decode([Denuncia].self, from: data)
-                
-                for key in self.listaDenuncias{
-                    let lat = key.latitude
-                    let lon = key.longitude
-                    let titulo = key.des_descricao
-                    
-                    let latitude: CLLocationDegrees = lat
-                    print(latitude)
-                    let longitude: CLLocationDegrees = lon
-                    let ponto: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
-                    let anotacao = MKPointAnnotation()
-                    
-                    anotacao.coordinate = ponto
-                    anotacao.title = titulo
-                    self.mapView.addAnnotation(anotacao)
-                }
-            } catch DecodingError.dataCorrupted(let context) {
-                print(context.debugDescription)
-            } catch DecodingError.keyNotFound(let codingKey, let context) {
-                print("Key: \(codingKey). \(context.debugDescription)")
-            } catch DecodingError.typeMismatch(_, let context) {
-                print(context.debugDescription)
-            } catch {
-                print(error.localizedDescription)
+                do{
+                    let listaDenuncias = try decoder.decode([Denuncia].self, from: data)
+                    completion(listaDenuncias)
+                } catch let error {
+                    self.exibirMensagem(titulo: "Error", mensagem: error.localizedDescription)
+                    print("Error:\(error.localizedDescription)")
+                    completion([])
+            }
+            case .failure(let error):
+                self.exibirMensagem(titulo: "Error", mensagem: error.localizedDescription)
+                print("Error:\(error.localizedDescription)")
+                completion([])
             }
         }
-        SVProgressHUD.dismiss()
+    }
+    
+    func listarTiposDenuncia(completion: @escaping([String])->Void){
+       
+        var tiposDenuncias: [String] = []
+        
+        Alamofire.request(URLs.tiposDesordem, method: .post).validate().responseJSON{
+            response in switch response.result{
+            case .success(let json):
+                let result = json as! NSArray
+                for key in result{
+                    let key = key as! NSDictionary
+                    let valor = key["des_descricao"] as! String
+                    tiposDenuncias.append(valor)
+                }
+                
+                completion(tiposDenuncias)
+                
+            case .failure(let error):
+                if (error._code == -1009) {
+                    self.exibirMensagem(titulo: "Erro", mensagem: "Sem conexão com a Internet!!!")
+                }
+                completion([])
+            }
+        }
+
+    }
+    
+    func recuperarDesordensPorArea(mapView: MKMapView , completion: @escaping([Denuncia]) -> Void) {
+        let mRect: MKMapRect = self.mapView.visibleMapRect
+        let A = MKMapPointMake(MKMapRectGetMinX(mRect), MKMapRectGetMinY(mRect))
+        let Ac = MKCoordinateForMapPoint(A)
+        let B = MKMapPointMake(MKMapRectGetMaxX(mRect), MKMapRectGetMinY(mRect))
+        let Bc = MKCoordinateForMapPoint(B)
+        let C = MKMapPointMake(MKMapRectGetMaxX(mRect), MKMapRectGetMaxY(mRect))
+        let Cc = MKCoordinateForMapPoint(C)
+        let D = MKMapPointMake(MKMapRectGetMinX(mRect), MKMapRectGetMaxY(mRect))
+        let Dc = MKCoordinateForMapPoint(D)
+        
+        var parametros: Parameters?
+        
+        if (self.status == nil) || (self.dataIni == nil) || (self.dataFim == nil) || (self.natureza == nil){
+            
+            parametros  = ["latA": Ac.latitude, "lonA": Ac.longitude, "latB": Bc.latitude, "lonB": Bc.longitude, "latC": Cc.latitude, "lonC": Cc.longitude, "latD": Dc.latitude, "lonD": Dc.longitude]
+        }else{
+            parametros = ["latA": Ac.latitude, "lonA": Ac.longitude, "latB": Bc.latitude, "lonB": Bc.longitude, "latC": Cc.latitude, "lonC": Cc.longitude, "latD": Dc.latitude, "lonD": Dc.longitude, "dataIni": self.dataIni!, "dataFim": self.dataFim!, "natureza": self.natureza!, "status": self.status!]
+        }
+        
+        Alamofire.request(URLs.denunciasPorArea, method: .get, parameters: parametros).validate().responseJSON{
+            response in
+            
+            switch response.result{
+            case .success:
+                guard let data = response.data else{
+                    // PRINT ALERT
+                    return
+                }
+                let decoder  = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
+                do{
+                    let listaDenuncias = try decoder.decode([Denuncia].self, from: data)
+                    completion(listaDenuncias)
+                } catch let error {
+                    self.exibirMensagem(titulo: "Error", mensagem: "Não foi passível carregar as desordens no mapa!")
+                    print("Error:\(error.localizedDescription)")
+                    completion([])
+                }
+            case .failure(let error):
+                self.exibirMensagem(titulo: "Error", mensagem: "Não foi passível carregar as desordens no mapa! Pode ser por falta de internet ou por falha na conexão com o servidor")
+                print("Error:\(error.localizedDescription)")
+                completion([])
+            }
+        }
+    }
+    
+    func apresentarDenunciasMapa(listaDenuncias: [Denuncia]) -> Void {
+        let anotacoes = self.mapView.annotations
+        self.mapView.removeAnnotations(anotacoes) // Retira anotações existentes para depois acrescentar as novas
+        
+        for key in listaDenuncias{
+            let lat = key.latitude
+            let lon = key.longitude
+ 
+            let latitude: CLLocationDegrees = lat
+            let longitude: CLLocationDegrees = lon
+            let ponto: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
+  
+            let anotacao: PontoDeDesordem = PontoDeDesordem(iddenuncia: key.den_iddenuncia ?? 0, des_descricao: key.des_descricao, den_descricao: key.den_descricao, coordinate: ponto)
+            
+            self.mapView.addAnnotation(anotacao)
+        }
     }
     
     fileprivate func configurarAddButton() {
@@ -108,14 +212,76 @@ class MapaViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func mapView(_ mapView: MKMapView!, rendererFor overlay: MKOverlay!) -> MKOverlayRenderer! {
-        if overlay is MKTileOverlay {
-            let renderer = MKTileOverlayRenderer(overlay:overlay)
-            renderer.alpha = 0.8
-            return renderer
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let identifer = "Marker"
+        var annotationView: MKMarkerAnnotationView
+        if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifer) as? MKMarkerAnnotationView{
+            dequeuedView.annotation = annotation
+            annotationView = dequeuedView
+        }else{
+            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifer)
+            annotationView.canShowCallout = true
+            let bt = UIButton(type: .detailDisclosure)
+            bt.tintColor = UIColor(red: 0.48, green: 0.09, blue: 0.53, alpha: 1)
+            annotationView.rightCalloutAccessoryView = bt
+            
+            // Para apresentar um imagem como botao
+            //let btmap = UIButton(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 30, height: 30)))
+            //btmap.setBackgroundImage(UIImage(named: "logo"), for: UIControlState())
+            //annotationView.rightCalloutAccessoryView = btmap
         }
-        return nil
+        return annotationView
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        
+        if (control as? UIButton)?.buttonType == UIButtonType.detailDisclosure{
+            mapView.deselectAnnotation(view.annotation, animated: false)
+            if let pontoDeDesordem = view.annotation as? PontoDeDesordem{
+                //print(pontoDeDesordem.den_iddenuncia)
+                if let navigation = self.navigationController{
+                    let nv = self.storyboard?.instantiateViewController(withIdentifier: "detalhes") as! DenunciaViewController
+                    nv.denuncia = barraLateral?.listaDenuncias?.first(where: {$0.den_iddenuncia == pontoDeDesordem.den_iddenuncia})
+                    //print(nv.denuncia.den_iddenuncia)
+                    navigation.pushViewController(nv, animated: true)
+                    
+                }
+            }
+        }
+    }
+    
+    var mapControleCarregamento = true
+    
+    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
+        
+        if mapControleCarregamento{
+            recuperarDesordensPorArea(mapView: self.mapView, completion: {(denuncias) in
+                print("carregando...")
+                SVProgressHUD.show(withStatus: "Carregando...")
+                if ((self.barraLateral?.listaDenuncias = denuncias) != nil) {
+                    print("Atribuição de denuncias realizada com sucesso")
+                }else{
+                    print("Erro na atribuição de denuncias para self.barraLateral?.listaDenuncias")
+                }
+                
+                self.apresentarDenunciasMapa(listaDenuncias: self.barraLateral?.listaDenuncias ?? [])
+                SVProgressHUD.dismiss()})
+            mapControleCarregamento = false
+        }
+        //print(self.barraLateral?.listaDenuncias ?? "Array Vazio")
+        //print("Numero de denuncias carregadas: \(String(describing: self.barraLateral!.listaDenuncias.count))")
+        
+    }
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+
+        recuperarDesordensPorArea(mapView: self.mapView, completion: {(denuncias) in
+            SVProgressHUD.show(withStatus: "Carregando denúncia...")
+            self.barraLateral?.listaDenuncias = denuncias
+            print("Numero de denuncias carregadas: \(String(describing: self.barraLateral!.listaDenuncias?.count))")
+            self.apresentarDenunciasMapa(listaDenuncias: self.barraLateral?.listaDenuncias ?? [])
+            SVProgressHUD.dismiss()})
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
@@ -132,11 +298,29 @@ class MapaViewController: UIViewController, MKMapViewDelegate, CLLocationManager
     
     
     func sideMenu(){
+
         if self.revealViewController() != nil {
+            
+            self.revealViewController()?.rearViewController = self.barraLateral
             menuButton.target = self.revealViewController()
             menuButton.action = #selector(SWRevealViewController.revealToggle(_:))
+            
+            filterButton.target = self.revealViewController()
+            filterButton.action = #selector(SWRevealViewController.rightRevealToggle(_:))
+            
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
             self.revealViewController()?.rearViewRevealWidth = 240
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let rightNC = storyboard.instantiateViewController(withIdentifier: "NavFiltrosViewController") as? UINavigationController
+            self.revealViewController().rightViewController = rightNC
+            
+            self.revealViewController().rightViewRevealWidth = UIScreen.main.bounds.size.width - 80
+            self.revealViewController().rightViewRevealOverdraw = 0
+            self.revealViewController().rightViewRevealDisplacement = 0
+            
+        }else{
+            self.revealViewController()?.rearViewController = self.barraLateral
         }
     }
     

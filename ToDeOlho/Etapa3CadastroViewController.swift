@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
+class Etapa3CadastroViewController: UIViewController,  UITextViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var descricaoTextView: UITextView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -164,7 +164,7 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
             enviarButton.isUserInteractionEnabled = true
             enviarButton.setTitleColor(.white, for: .normal)
             
-            self.denuncia?.des_descricao = self.descricaoTextView.text
+            self.denuncia?.den_descricao = self.descricaoTextView.text
             let usuario = UserDefaults.standard.string(forKey: "usuario")
             self.denuncia?.usu_nome = usuario!
 
@@ -179,19 +179,24 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
                     self.imageFileName.append("")
             }
                 
-                let parametros: Parameters = ["usuario": self.denuncia?.usu_nome ?? "", "den_status": self.denuncia?.den_status ?? "", "den_descricao": self.denuncia?.den_descricao ?? "", "den_anonimato": self.denuncia?.den_anonimato ?? "", "desordem": self.denuncia?.des_descricao ?? "", "den_datahora_registro": self.denuncia?.den_datahora_registro ?? "", "den_datahora_ocorreu": self.denuncia?.den_datahora_ocorreu ?? "", "den_nivel_confiabilidade": self.denuncia?.den_nivel_confiabilidade ?? "", "den_local_latitude": self.denuncia?.latitude ?? "", "den_local_longitude": self.denuncia?.longitude ?? "", "img_nome_0": self.imageFileName[0] , "img_nome_1": self.imageFileName[1] , "img_nome_2": self.imageFileName[2] , "img_nome_3": self.imageFileName[3] ]
+                let parametros: Parameters = ["usuario": self.denuncia?.usu_nome ?? "", "den_status": self.denuncia?.den_status ?? "", "den_descricao": self.denuncia?.den_descricao ?? "", "den_anonimato": self.denuncia?.den_anonimato ?? "", "des_descricao": self.denuncia?.des_descricao ?? "", "den_datahora_registro": self.denuncia?.den_datahora_registro ?? "", "den_datahora_ocorreu": self.denuncia?.den_datahora_ocorreu ?? "", "den_nivel_confiabilidade": self.denuncia?.den_nivel_confiabilidade ?? "", "den_local_latitude": self.denuncia?.latitude ?? "", "den_local_longitude": self.denuncia?.longitude ?? "", "img_nome_0": self.imageFileName[0] , "img_nome_1": self.imageFileName[1] , "img_nome_2": self.imageFileName[2] , "img_nome_3": self.imageFileName[3] ]
                 print(parametros)
                 
                 
                 Alamofire.request(URLs.inserirDenuncia, method: .post, parameters: parametros).responseJSON
                     {
-                        response in switch response.result
-                        {
+                        response in
+                        
+                        print(response.result)
+                        
+                        switch response.result{
+                        
                         case .success(let JSON):
                             let response = JSON as! NSDictionary
                             
                             let sucesso = response["sucesso"] as? Int
                             if sucesso == 0 { // "0" eh o retorno equivalente a false
+                                
                                 let erro = response.value(forKey: "Error")
                                 print(erro ?? "")
                                 self.exibirMensagem(titulo: "Ocorreu um erro!", mensagem: "Não foi possivel inserir a denúncia no nosso Banco de Dados")
@@ -285,7 +290,7 @@ class DescricaoDenunciaViewController: UIViewController,  UITextViewDelegate, UI
     }    
 }
 
-extension DescricaoDenunciaViewController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+extension Etapa3CadastroViewController:  UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
             let originalWidth = image.size.width

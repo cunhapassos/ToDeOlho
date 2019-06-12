@@ -11,10 +11,13 @@ import Alamofire
 import GoogleSignIn
 import FBSDKCoreKit
 import FBSDKLoginKit
+import CryptoSwift
+
 
 class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate, SocialDelegate {
     
-    //let URL_USER_LOGIN = "http://projetomds.herokuapp.com/app/login"
+    var mapViewController: MapaViewController?
+    var storyBoard: UIStoryboard?
     
     @IBOutlet weak var imageSocial: UIImageView!
     @IBOutlet weak var login: UITextField!
@@ -22,11 +25,21 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
     @IBOutlet weak var loginButton: FBSDKLoginButton!
     @IBOutlet weak var googleButton: UIButton!
     @IBOutlet weak var labelError: UILabel!
+    @IBOutlet weak var btMenu: UIBarButtonItem!
     
     let socialAuth : Autenticador = Autenticador()
 
+    
     @IBAction func entrar(_ sender: Any) {
-        let parametros: Parameters = ["email": login.text!, "password": senha.text!]
+        
+        var pass = senha.text!
+        pass = pass.md5()
+        print(pass)
+        if (login.text!.isEmpty || senha.text!.isEmpty){
+            exibirMensagem(titulo: "", mensagem: "Preencha os campos email e senha para fazer o login")
+        }
+        let parametros: Parameters = ["email": login.text!, "password": pass]
+        
         
         Alamofire.request(URLs.login, method: .post, parameters: parametros).responseJSON{ response in
             guard let json = response.result.value as? [String: Any] else{
@@ -45,15 +58,11 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
             if retorno == "true" {
                 //Persistindo dados de usuario
                 UserDefaults.standard.set(self.login.text!, forKey: "usuario")
+                UserDefaults.standard.set(self.login.text!, forKey: "nomeUsuario")
                 UserDefaults.standard.set(self.senha.text!, forKey: "senha")
                 UserDefaults.standard.set(true, forKey: "usuarioLogado")
                 
-                if let navigation = self.navigationController{
-                    navigation.popToRootViewController(animated: true)
-                } else{
-                    self.dismiss(animated: true, completion: nil)
-                }
-
+                self.exibirMensagemLogin(titulo: "", mensagem: "Login realizado com sucesso")
             }
             else{
                 print("Senha ou email errado")
@@ -65,12 +74,27 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         }
     }
     
-    @IBAction func fechar(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.barTintColor =  UIColor(red: 0.48, green: 0.09, blue: 0.53, alpha: 1)
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController!.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+    }
+    
+    func sideMenu(){
+        if (self.revealViewController() != nil) && (btMenu != nil) {
+            btMenu.target = self.revealViewController()
+            btMenu.action = #selector(SWRevealViewController.revealToggle(_:))
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            self.revealViewController()?.rearViewRevealWidth = 240
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        sideMenu()
         
         labelError.isHidden = true
         let status = UserDefaults.standard.bool(forKey: "usuarioLogado")
@@ -88,6 +112,8 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         }
         
         loginButton.readPermissions = ["public_profile", "email"]
+        let buttonText = NSAttributedString(string: "Facebook")
+        loginButton.setAttributedTitle(buttonText, for: .normal)
         //loginButton.frame = CGRect(x: 0, y: 0, width: 200, height: 45)
         loginButton.delegate = self
         GIDSignIn.sharedInstance().delegate = self
@@ -111,6 +137,8 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         // Dispose of any resources that can be recreated.
     }
     
+
+    
     // ----- GOOGLE LOGIN API -----
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         print(user)
@@ -131,26 +159,26 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
             let email = user.profile.email
             print("User email address is "+email!+"")
             
-            if self.consultarUsuario(login: user.profile.email, senha: user.userID) {
+            if !self.consultarUsuario(email: user.profile.email) {
                 print("NAO CADASTRADO")
-                self.cadastrarUsuario(login: user.profile.email, senha: user.userID, nome: user.profile.name)
+                
+                if !self.cadastrarUsuario(login: user.profile.email, senha: user.userID, nome: user.profile.name){
+                    exibirMensagem(titulo: "Erro", mensagem: "Não foi possivel fazer o login")
+                    return
+                }
+                
             }
             
             UserDefaults.standard.set(user.profile.email, forKey: "usuario")
+            UserDefaults.standard.set(user.profile.name, forKey: "nomeUsuario")
             UserDefaults.standard.set(user.authentication.idToken, forKey: "senha")
             UserDefaults.standard.set(true, forKey: "usuarioLogado")
             
             
-            labelError.isHidden = false;
-            labelError.text = "Profile : "+fullName!+""
+            //labelError.isHidden = false;
+            //labelError.text = "Profile : "+fullName!+""
             
-            
-            //self.performSegue(withIdentifier: "loginSegue", sender: nil)
-            if let navigation = self.navigationController{
-                navigation.popToRootViewController(animated: true)
-            } else{
-                self.dismiss(animated: true, completion: nil)
-            }
+            self.exibirMensagemLogin(titulo: "", mensagem: "Login realizado com sucesso")
             
             if(user.profile.hasImage){
                 URLSession.shared.dataTask(with: NSURL(string: user.profile.imageURL(withDimension: 400).absoluteString)! as URL, completionHandler: { (data, response, error) -> Void in
@@ -179,35 +207,35 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
     
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: Error!) {
         print(user)
-        labelError.isHidden = true;
-        self.labelError.text = ""
-        self.imageSocial.image = UIImage(named: "login.png")
-        self.imageSocial.clipsToBounds = false
+        //labelError.isHidden = true;
+        //self.labelError.text = ""
+        //self.imageSocial.image = UIImage(named: "login.png")
+        //self.imageSocial.clipsToBounds = false
     }
     
     func onGoogleSuccessResponse(user: Any) {
         hideProgressIndicator()
         print(user)
-        labelError.isHidden = false;
+        //labelError.isHidden = false;
         //        labelError.text = "Failed : "+user+""
     }
  
     func onGoogleErrorResponse(error: Error?) {
         hideProgressIndicator()
         print(error?.localizedDescription as Any)
-        labelError.isHidden = false;
-        labelError.text = "Failed : "+(error?.localizedDescription)!+""
+        //labelError.isHidden = false;
+        //labelError.text = "Failed : "+(error?.localizedDescription)!+""
     }
-    // FACEBOOK LOGIN API -----
     
+    // FACEBOOK LOGIN API -----
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         hideProgressIndicator()
         print("LOGOUT")
-        self.labelError.text = ""
+        //self.labelError.text = ""
         self.login.text = ""
         self.senha.text = ""
-        self.imageSocial.image = UIImage(named: "login.png")
-        self.imageSocial.clipsToBounds = false
+        //self.imageSocial.image = UIImage(named: "login.png")
+        //self.imageSocial.clipsToBounds = false
     }
     
     func loginButtonWillLogin(_ loginButton: FBSDKLoginButton!) -> Bool {
@@ -226,7 +254,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
             //socialAuth.facebookLogin()
             return
         }
-        
+
         onFBErrorResponse(error : error)
         return
     }
@@ -242,11 +270,15 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
             let id = userDataDict["id"] as! String
             let name = userDataDict["first_name"] as! String
             
-            if consultarUsuario(login: usuario, senha: id){
-                cadastrarUsuario(login: usuario, senha: id, nome: name)
+            if !consultarUsuario(email: usuario){
+                if !cadastrarUsuario(login: usuario, senha: id, nome: name){
+                    exibirMensagem(titulo: "Erro", mensagem: "Não foi possivel fazer o login")
+                    return
+                }
             }
             
             UserDefaults.standard.set(usuario, forKey: "usuario")
+            UserDefaults.standard.set(name, forKey: "nomeUsuario")
             UserDefaults.standard.set(id, forKey: "senha")
             UserDefaults.standard.set(true, forKey: "usuarioLogado")
             
@@ -268,12 +300,8 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
                 })
                 
             }).resume()
-            //self.performSegue(withIdentifier: "loginSegue", sender: nil)
-            if let navigation = self.navigationController{
-                navigation.popToRootViewController(animated: true)
-            } else{
-                self.dismiss(animated: true, completion: nil)
-            }
+            
+            self.exibirMensagemLogin(titulo: "", mensagem: "Login realizado com sucesso")
         }
         
         hideProgressIndicator()
@@ -282,13 +310,14 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
     func onFBErrorResponse(error: Error?) {
         hideProgressIndicator()
         print(error?.localizedDescription as Any)
-        labelError.isHidden = false;
-        labelError.text = "Failed : "+(error?.localizedDescription)!+""
-        self.imageSocial.image = UIImage(named: "login.png")
+        //labelError.isHidden = false;
+        //labelError.text = "Failed : "+(error?.localizedDescription)!+""
+        //self.imageSocial.image = UIImage(named: "login.png")
     }
     
     func consultarUsuario(login: String, senha: String) -> Bool
     {
+        let senha = senha.md5()
         let parametros: Parameters = ["email": login, "password": senha]
         var retornoBool = true
         
@@ -310,8 +339,27 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         return retornoBool
     }
     
-    func cadastrarUsuario(login: String, senha: String, nome: String) -> Bool{
+    func consultarUsuario(email: String) -> Bool
+    {
+        let parametros: Parameters = ["email": email]
+        var retornoBool = true
         
+        Alamofire.request(URLs.consultaEmail, method: .post, parameters: parametros).responseJSON
+            {
+                response in switch response.result
+                {
+                case .success(let JSON):
+                    let response = JSON as! NSDictionary
+                    
+                    retornoBool = response["sucesso"] as? Bool ?? true
+                case .failure(let error):
+                    print("Request failed with error:\(error)")
+                }
+        }
+        return retornoBool
+    }
+    
+    func cadastrarUsuario(login: String, senha: String, nome: String) -> Bool{
         
         let nascimento = "01/01/2001"
         let nomeUsuario = login
@@ -320,6 +368,8 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         let tipo = 2
         let telefone = ""
         let email = login
+        
+        let senha = senha.md5()
         
         let parametros: Parameters = ["login": nomeUsuario, "senha": senha, "email": email, "nascimento": nascimento, "cpf": cpf,"nome": nome, "confia": confia, "tipo": tipo, "telefone": telefone]
         
@@ -351,5 +401,27 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         alerta.addAction(acaoCancelar)
         present(alerta, animated: true, completion: nil)
     }
-
+    
+    func exibirMensagemLogin(titulo: String, mensagem: String) {
+        let alerta = UIAlertController(title: titulo, message: mensagem, preferredStyle: .alert)
+        
+        alerta.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
+            let navigattion = self.navigationController?.viewControllers.first
+            if navigattion == self.navigationController?.visibleViewController {
+                let sb = self.storyBoard
+                if (self.mapViewController == nil){
+                    self.mapViewController = sb?.instantiateViewController(withIdentifier: "Mapa") as? MapaViewController
+                }
+                
+                let controller = self.mapViewController
+                let navController = UINavigationController(rootViewController: controller!)
+                navController.navigationBar.barTintColor = UIColor(red: 123, green: 22, blue: 135, alpha: 1.0)
+                self.revealViewController().pushFrontViewController(navController, animated: true)
+            }else{
+                self.navigationController?.popViewController(animated: true)
+            }
+        }))
+        self.present(alerta, animated: true, completion: nil)
+    }
+ 
 }

@@ -11,9 +11,12 @@ struct URLs {
     static let main             = "http://projetomds.herokuapp.com/"
     
     /// POST {login, password}
-    static let login            = main + "app/login"
-    //static let denuncias        = main + "api/denuncias/coordsA"
+    static let login            = main + "api/usuario/login"
+    static let consultaEmail    = main + "api/usuario/consulta/email"
+    //static let denuncias      = main + "api/denuncias/coordsA"
     static let denuncias        = main + "api/denuncias/listadedenuncias"
+    /// GET {latA, lonA, latB, lonB, latC, lonC, latD, lonD}
+    static let denunciasPorArea = main + "api/denuncias/listadedenuncias/area/"
     
     static let tiposDesordem    = main + "api/tipodedesordem"
     static let inserirUsuario   = main + "app/usuarios/insert"

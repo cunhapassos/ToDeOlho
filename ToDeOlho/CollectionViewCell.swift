@@ -14,7 +14,7 @@ class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var deleteView: UIVisualEffectView!
     @IBOutlet weak var deleteButton: UIButton!
     var collection: UICollectionView!
-    var view: DescricaoDenunciaViewController!
+    var view: Etapa3CadastroViewController!
     var index: IndexPath!
     
     @IBAction func deletarCelula(_ sender: Any) {

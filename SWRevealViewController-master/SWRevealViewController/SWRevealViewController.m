@@ -1023,8 +1023,8 @@ const int FrontViewPositionNone = 0xff;
 
 - (void)_getRevealWidth:(CGFloat*)pRevealWidth revealOverDraw:(CGFloat*)pRevealOverdraw forSymetry:(int)symetry
 {
-    if ( symetry < 0 ) *pRevealWidth = _rightViewRevealWidth, *pRevealOverdraw = _rightViewRevealOverdraw;
-    else *pRevealWidth = _rearViewRevealWidth, *pRevealOverdraw = _rearViewRevealOverdraw;
+    if ( symetry < 0 ) (void)(*pRevealWidth = _rightViewRevealWidth), *pRevealOverdraw = _rightViewRevealOverdraw;
+    else (void)(*pRevealWidth = _rearViewRevealWidth), *pRevealOverdraw = _rearViewRevealOverdraw;
     
     if (*pRevealWidth < 0) *pRevealWidth = _contentView.bounds.size.width + *pRevealWidth;
 }

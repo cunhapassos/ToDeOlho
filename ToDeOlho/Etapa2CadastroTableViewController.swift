@@ -7,30 +7,29 @@
 //
 
 import UIKit
-import Alamofire
 import MapKit
+import Alamofire
+import SVProgressHUD
 
-class DenunciaTableViewController: UITableViewController{
+class Etapa2CadastroTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource{
 
-    /* COLOCAR URL COMO UserDefaults.standard */
-    //let URL_TPOS_DESORDEM = "http://localhost:3000/api/tipodedesordem"
-    //let URL_ISERIR_DENUNCIA = "http://localhost:3000/api/denuncia/inserir"
-
-    @IBOutlet weak var descricaoTextView: UITextView!
     @IBOutlet weak var dataLabel: UILabel!
     @IBOutlet weak var horaLabel: UILabel!
     @IBOutlet weak var desordemTipoLabel: UILabel!
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var horaPicker: UIDatePicker!
     @IBOutlet weak var tipoPicker: UIPickerView!
-    @IBOutlet weak var regitrarButton: UIBarButtonItem!
-    
+    @IBOutlet weak var proximoButton: UIBarButtonItem!
+    @IBOutlet weak var coordenadas: UILabel!
     
     // datepicker related data
     var pickerIndexPath: IndexPath?
     var pickerVisible: Bool = false
-    var tipoDenuncia = Array<String>()
+    var tipoDenuncia: [String]? // fazer receber da realView
     var localizacao: CLLocation!
+
+    var denuncia: Denuncia?
+    var barraLateral: BarraLateralViewController?
     
     @IBAction func datePickerValueChanged(_ sender: Any) {
         let dateFormatter = DateFormatter()
@@ -48,37 +47,52 @@ class DenunciaTableViewController: UITableViewController{
         horaLabel.text = strDate
     }
     
-    @IBAction func registrarDenuncia(_ sender: Any) {
+    func validarUser() -> String{
+        let status = UserDefaults.standard.bool(forKey: "usuarioLogado")
         
+        if status {
+            let usuario = UserDefaults.standard.string(forKey: "usuario")
+            return usuario!
+        } else{
+            // Cria o alerta
+            let alert = UIAlertController(title: "Não há usuário logado", message: "Para cadastrar uma denuncia você precisa fazer login. Deseja fazer login agora?", preferredStyle: .alert)
+            
+            // Adiciona acoes (botoes
+            alert.addAction(UIAlertAction(title: "Sim", style: .default, handler: { action in
+                self.performSegue(withIdentifier: "loginSegue", sender: nil)
+            }))
+            alert.addAction(UIAlertAction(title: "Não", style: .cancel, handler: nil))
+            
+            // Mostra o alerta
+            self.present(alert, animated: true, completion: nil)
+            return ""
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Recuperando data do Registro
+
+        let usuario = UserDefaults.standard.string(forKey: "usuario")
         let data = Date()
+        
         let formatarData = DateFormatter()
         formatarData.dateFormat = "yyyy/MM/dd"
         let hoje = formatarData.string(from: data)
         
         // Covertendo data do fato para formato americano
         formatarData.dateFormat = "dd/MM/yyyy"
+        
         let datahora_fato = formatarData.date(from: self.dataLabel.text!)
         formatarData.dateFormat = "yyyy/MM/dd"
         let dataHora = formatarData.string(from: datahora_fato!)
         
-        print(dataHora)
         
-        // Recuperando Usuario
-        let usuario = UserDefaults.standard.string(forKey: "usuario")
+        self.denuncia = Denuncia(usu_nome: usuario ?? "", den_anonimato: nil, den_status: "Com problemas", den_idusuario: nil, den_iddenuncia: nil, den_descricao: "", des_descricao: self.desordemTipoLabel.text!, den_datahora_ocorreu: dataHora, den_datahora_solucao: nil, den_datahora_registro: hoje, latitude: self.localizacao.coordinate.latitude, longitude: self.localizacao.coordinate.longitude, den_nivel_confiabilidade: 0)
         
-        //print("\(String(describing: self.desordemTipoLabel.text)), \(usuario!), \(hoje), \(dataHora), \(self.localizacao), \(self.descricaoTextView.text)")
-        
-        let parametros: Parameters = ["desordem": self.desordemTipoLabel.text!, "usuario": usuario!, "den_datahora_registro": hoje, "den_datahora_ocorreu": dataHora, "den_status": "Com problemas", "den_nivel_confiabilidade": "0", "den_local_latitude": self.localizacao.coordinate.latitude, "den_local_longitude": self.localizacao.coordinate.longitude, "den_descricao": self.descricaoTextView.text, "den_anonimato": "1"]
-        
-        Alamofire.request(Config.URL_ISERIR_DENUNCIA, method: .post, parameters: parametros).responseJSON{
-            response in
-            print("Success: \(response.result.isSuccess)")
-            print("Response String: \(String(describing: response.result.value))")
-        
+        if segue.identifier == "denunciaSegue"{
+            let svc = segue.destination as! Etapa3CadastroViewController
+            svc.denuncia = self.denuncia
         }
-        
-        self.performSegue(withIdentifier: "registraDenunciaSegue", sender: nil)
     }
     
     override func viewDidLoad() {
@@ -87,44 +101,39 @@ class DenunciaTableViewController: UITableViewController{
         datePicker.isHidden = true
         horaPicker.isHidden = true
         tipoPicker.isHidden = true
-        pickerIndexPath = IndexPath(item: 1, section: 2 )
-        regitrarButton.isEnabled = false
+        pickerIndexPath = IndexPath(item: 1, section: 1 )
+        proximoButton.isEnabled = false
         
         tipoPicker.dataSource = self
         tipoPicker.delegate = self
         
-        descricaoTextView.delegate = self
+        // descricaoTextView.delegate = self
+        let latitude    = String(self.localizacao.coordinate.latitude)
+        let longitude   = String(self.localizacao.coordinate.longitude)
         
+        coordenadas.text = "(\(latitude), \(longitude))"
         dataLabel.text = getToday()
         horaLabel.text = getHourNow()
         desordemTipoLabel.text = "Selecione o tipo de desordem"
         
-        print(localizacao.coordinate.latitude)
-        listarTiposDenuncia()
+        self.barraLateral = revealViewController().rearViewController as? BarraLateralViewController
+        self.tipoDenuncia = self.barraLateral?.tipoDenuncia
     }
     
-    
-    func listarTiposDenuncia(){
-        Alamofire.request(Config.URL_TPOS_DESORDEM, method: .post).responseJSON{
-            response in
-            
-            if let result = response.result.value as? NSArray{
-                for key in result{
-                    let key = key as! NSDictionary
-                    let valor = key["des_descricao"] as! String
-                    self.tipoDenuncia.append(valor)
-                }
-                // Teste: Fase de desenvolvimento
-                for key in self.tipoDenuncia{
-                    print(key)
-                }
-            }else{
-                //Tratar erro de requisição
-            }
-            print("Success: \(response.result.isSuccess)")
-            print("Response String: \(String(describing: response.result.value))")
-        }
+    override func viewWillAppear(_ animated: Bool) {
+         self.tipoPicker.reloadAllComponents()
     }
+    
+
+    
+    func exibirMensagem(titulo: String, mensagem: String) {
+        let alerta = UIAlertController(title: titulo, message: mensagem, preferredStyle: .alert)
+        let acaoCancelar = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        
+        alerta.addAction(acaoCancelar)
+        present(alerta, animated: true, completion: nil)
+    }
+    
     func getToday() -> String{
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
@@ -136,14 +145,14 @@ class DenunciaTableViewController: UITableViewController{
     func getHourNow() -> String{
         let calendar = Calendar.current
         let time = calendar.dateComponents([.hour,.minute,.second], from: Date())
-        return "\(time.hour!):\(time.minute!)"
+        return String(format:"%02i:%02i", time.hour!, time.minute!)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 2
-        case 2:
+            return 3
+        case 1:
             return pickerVisible ? 2 : 1
         default:
             return 1
@@ -155,7 +164,7 @@ class DenunciaTableViewController: UITableViewController{
         tableView.beginUpdates()
         switch indexPath.section {
         case 0:
-           if indexPath.row == 0 {
+           if indexPath.row == 1 {
                 if pickerVisible && !datePicker.isHidden {
                     tableView.deleteRows(at: [pickerIndexPath!], with: .fade)
                     pickerVisible = false
@@ -180,10 +189,9 @@ class DenunciaTableViewController: UITableViewController{
                     tipoPicker.isHidden = true
                     tableView.insertRows(at: [pickerIndexPath!], with: .fade)
                 }
-            }else{
+            }else if indexPath.row == 2 {
                 if pickerVisible && !horaPicker.isHidden{
                     tableView.deleteRows(at: [pickerIndexPath!], with: .fade)
-                    print("Passou")
                     pickerVisible = false
                     datePicker.isHidden = true
                     horaPicker.isHidden = true
@@ -206,7 +214,15 @@ class DenunciaTableViewController: UITableViewController{
                     tipoPicker.isHidden = true
                     tableView.insertRows(at: [pickerIndexPath!], with: .fade)
                 }
-            }
+           }else{
+                if pickerVisible {
+                    tableView.deleteRows(at: [pickerIndexPath!], with: .fade)
+                    pickerVisible = false
+                    datePicker.isHidden = true
+                    horaPicker.isHidden = true
+                    tipoPicker.isHidden = true
+                }
+           }
             break
         case 1:
             if indexPath.row == 0 {
@@ -235,48 +251,47 @@ class DenunciaTableViewController: UITableViewController{
                 }
             }
             break
-        case 2:
-            if indexPath.row == 0 && pickerVisible {
-                tableView.deleteRows(at: [pickerIndexPath!], with: .fade)
-                pickerVisible = false
-                datePicker.isHidden = true
-                horaPicker.isHidden = true
-                tipoPicker.isHidden = true
-            }
         default:
             break
         }
         tableView.endUpdates()
     }
-}
-
-extension DenunciaTableViewController: UIPickerViewDelegate, UIPickerViewDataSource{
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return tipoDenuncia.count
+        return tipoDenuncia?.count ?? 0
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        self.desordemTipoLabel.text = tipoDenuncia[row]
-        
-        if !self.descricaoTextView.text.isEmpty && (desordemTipoLabel.text != "Selecione o tipo de desordem"){
-            self.regitrarButton.isEnabled = true
+        self.desordemTipoLabel.text = tipoDenuncia?[row]
+        /*
+         if !self.descricaoTextView.text.isEmpty && (desordemTipoLabel.text != "Selecione o tipo de desordem"){
+         self.regitrarButton.isEnabled = true
+         }
+         */
+        if (desordemTipoLabel.text != "Selecione o tipo de desordem"){
+            self.proximoButton.isEnabled = true
         }
-        
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return tipoDenuncia[row]
+        return tipoDenuncia?[row]
     }
 }
 
-extension DenunciaTableViewController: UITextViewDelegate{
+
+extension Etapa2CadastroTableViewController: UITextViewDelegate{
     func textViewDidChangeSelection(_ textView: UITextView) {
+        /*
         if !self.descricaoTextView.text.isEmpty && (desordemTipoLabel.text != "Selecione o tipo de desordem"){
             self.regitrarButton.isEnabled = true
+        }
+ */
+        if (desordemTipoLabel.text != "Selecione o tipo de desordem"){
+            self.proximoButton.isEnabled = true
         }
         tableView.beginUpdates()
         if pickerVisible {

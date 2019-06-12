@@ -1,132 +1,84 @@
 //
 //  DenunciaViewController.swift
-//  MDD
+//  ToDeOlho
 //
-//  Created by Paulo Passos on 27/07/18.
-//  Copyright © 2018 paulopassos. All rights reserved.
+//  Created by Paulo Passos on 05/06/19.
+//  Copyright © 2019 paulopassos. All rights reserved.
 //
 
 import UIKit
 import MapKit
 
-
 class DenunciaViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
-    @IBOutlet weak var mapDenView: MKMapView!
-    @IBOutlet weak var proximoButton: UIBarButtonItem!
+    @IBOutlet weak var mapa: MKMapView!
+    @IBOutlet weak var lbNatureza: UILabel!
+    @IBOutlet weak var lbDataRegistro: UILabel!
+    @IBOutlet weak var lbDataFato: UILabel!
+    @IBOutlet weak var lbStatus: UILabel!
+    @IBOutlet weak var lbNomeDenunciante: UILabel!
+    @IBOutlet weak var lbDescricao: UILabel!
+    
+    
+    var denuncia: Denuncia?
     
     let locationManager = CLLocationManager()
     var latitude: CLLocationDegrees = 0.0
     var longitude: CLLocationDegrees = 0.0
-    var cnt: Int = 0
-    var localizacao: CLLocation!
     
     override func viewDidLoad() {
-        super.viewDidLoad()
         
-        proximoButton.isEnabled              = false
+        self.lbStatus.text = self.denuncia?.den_status
+        self.lbNatureza.text = self.denuncia?.des_descricao
+        self.lbDescricao.text = self.denuncia?.den_descricao
+        if self.denuncia?.den_anonimato == 1 {
+            self.lbNomeDenunciante.text = "Anônimo"
+        }else{
+            self.lbNomeDenunciante.text = self.denuncia?.usu_nome
+        }
+        self.lbDataFato.text = formatarData(data:  self.denuncia?.den_datahora_ocorreu ?? "")
+        self.lbDataRegistro.text = formatarData(data: self.denuncia?.den_datahora_registro ?? "")
+
+        mostraMapaComDenuncia()
+    }
+    
+    func mostraMapaComDenuncia(){
         
         self.locationManager.delegate        = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
-        self.mapDenView.delegate = self
+        self.mapa.delegate = self
         
-        let template = "http://tile.openstreetmap.org/{z}/{x}/{y}.png"
-        let carte_indice = MKTileOverlay(urlTemplate:template) 
+        let template = URLs.openstreetmap // Buscando openstreetmap
+        let carte_indice = MKTileOverlay(urlTemplate:template)
+        let latitude: CLLocationDegrees = self.denuncia?.latitude ?? 0
+        let longitude: CLLocationDegrees = self.denuncia?.longitude ?? 0
+        let ponto: CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
+        let regiao = MKCoordinateRegionMakeWithDistance(ponto, 1000, 2000)
         
-        //let denuncia = Denuncia()
+        mapa.setRegion(regiao, animated: false)
         carte_indice.canReplaceMapContent = true
-        self.mapDenView.add(carte_indice)
+        self.mapa.add(carte_indice)
         
-        // Para capturar um ponto no mapa
-        let reconhecedorGesto = UILongPressGestureRecognizer(target: self, action: #selector(DenunciaViewController.marcar(gesture:)))
-        reconhecedorGesto.minimumPressDuration = 0.5
-        mapDenView.addGestureRecognizer(reconhecedorGesto)
+        let anotacao = MKPointAnnotation()
+        
+        anotacao.coordinate = ponto
+        anotacao.title = self.denuncia?.des_descricao
+        anotacao.subtitle = self.denuncia?.den_descricao
+        self.mapa.addAnnotation(anotacao)
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        if !CheckInternet.Connection(){
-            self.exibirMensagem(titulo: "Erro de Conexão", mensagem: "O aparelho está sem conexão com a internet!")
+    func formatarData(data: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatter.timeZone = NSTimeZone(name: "UTC") as TimeZone?
+        guard let date = dateFormatter.date(from: denuncia?.den_datahora_registro ?? "000-00-00") else {
+            fatalError()
         }
-    }
-    
-    func exibirMensagem(titulo: String, mensagem: String) {
-        let alerta = UIAlertController(title: titulo, message: mensagem, preferredStyle: .alert)
-        let acaoCancelar = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
         
-        alerta.addAction(acaoCancelar)
-        present(alerta, animated: true, completion: nil)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        let newDate = dateFormatter.string(from: date)
 
-    
-    @objc func marcar(gesture: UIGestureRecognizer){
-
-        if gesture.state == UIGestureRecognizerState.began {
-            let pontoSelecionado = gesture.location(in: self.mapDenView)
-            let coordenadas = mapDenView.convert(pontoSelecionado, toCoordinateFrom: self.mapDenView)
-            localizacao = CLLocation(latitude: coordenadas.latitude, longitude: coordenadas.longitude)
-            
-            // selecionar o endereço do ponto selecionado
-            var localCompleto = "Endereço não encontrado"
-            CLGeocoder().reverseGeocodeLocation(localizacao, completionHandler: { (local, erro) in
-                if erro == nil {
-                    if let dadosLocal = local?.first{
-                        if let nome = dadosLocal.name{
-                            localCompleto = nome
-                        }
-                        else{
-                            if let endereco = dadosLocal.thoroughfare{
-                                localCompleto = endereco
-                            }
-                        }
-                    }
-                    
-                    let anotacao = MKPointAnnotation()
-                    
-                    anotacao.coordinate.latitude = coordenadas.latitude
-                    anotacao.coordinate.longitude = coordenadas.longitude
-                    
-                    // Permite Apenas uma marcação no Mapa
-                    let anotacoes = self.mapDenView.annotations
-                    if !anotacoes.isEmpty{
-                        self.mapDenView.removeAnnotation(anotacoes[0])
-                    }
-                    
-                    self.mapDenView.addAnnotation(anotacao)
-                    self.proximoButton.isEnabled = true
-                }
-                else{
-                    if (erro!._code == 2){
-                        self.exibirMensagem(titulo: "Erro de Conexão", mensagem: "O aparelho está sem conexão com a internet!")
-                    }
-                }
-            })
-        }
-    }
-    // Enviando o localização da denuncia para proxima view para registro
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "pontoMapaSegue"{
-            let svc = segue.destination as! DenunciaTableViewController
-            svc.localizacao = localizacao
-
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
-        
-        let userlocation:CLLocation = locations [0] as CLLocation
-        locationManager.stopUpdatingLocation()
-        let location = CLLocationCoordinate2D(latitude: userlocation.coordinate.latitude, longitude: userlocation.coordinate.longitude)
-        let span = MKCoordinateSpanMake (0.0075, 0.0075)
-        let region = MKCoordinateRegion(center: location, span: span)
-        mapDenView.setRegion(region, animated: true)
-    }
-    
+        return newDate
+    } 
 }

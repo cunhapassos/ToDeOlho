@@ -8,9 +8,11 @@
 
 import UIKit
 
-class DicasViewController: UITableViewController {
+class DicasViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var menuButton: UIBarButtonItem!
+    @IBOutlet weak var tableDicas: UITableView!
+    
     var dicas: Array<String> = ["Mantenha seu dinheiro bem protegido. Se não tiver carteira, use papel ou plástico para envolver as notas",
                                 "Bancos são os locais mais seguros para se guardar dinheiro. Não guarde dinheiro e valores em casa",
     "Evite contar dinheiro em público",
@@ -34,6 +36,9 @@ class DicasViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         sideMenu()
+        
+        tableDicas.delegate = self
+        tableDicas.dataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,12 +57,12 @@ class DicasViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dicas.count
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "LabelCell", for: indexPath)
         cell.textLabel?.text = dicas[indexPath.row]
         
         return cell

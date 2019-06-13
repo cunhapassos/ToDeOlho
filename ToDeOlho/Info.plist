@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -38,7 +38,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>FacebookAppID</key>
 	<string>2075059615915963</string>
 	<key>FacebookDisplayName</key>
@@ -58,11 +58,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>É necessário acesso a sua câmera para tirar fotos para o TôDeOlho!</string>
+	<string>É necessário acesso a sua câmera, para que possa inserir fotos de locais referentes à desordem que esteja cadastrando!</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>É necessário acesso a sua localização para o funcionamento do TôDeOlho!</string>
+	<string>O Tô de Olho no DF usa sua localização para buscar e carregar no mapa as denuncias de desordens mais próxiamas de você, portanto, para o aplicativo funcionar corretamente, é necessário acesso a sua localização!</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>É necessário acesso a sua biblioteca de fatos para selecionar fotos para o TôDeOlho!</string>
+	<string>É necessário acesso a sua biblioteca de fotos para selecionar as imagens que deseja associar a uma desordem que esteja cadastrando!</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

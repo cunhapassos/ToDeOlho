@@ -28,10 +28,10 @@
 		2F989C8E22106409002B2965 /* Etapa3CadastroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F989C8D22106409002B2965 /* Etapa3CadastroViewController.swift */; };
 		2FC52A18229ED06F001CF4CF /* configuracaoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC52A17229ED06F001CF4CF /* configuracaoViewController.swift */; };
 		2FC52A1A229EEB93001CF4CF /* BarraLateralViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC52A19229EEB93001CF4CF /* BarraLateralViewController.swift */; };
+		2FCF151A22B2D59000F0FC80 /* DicasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FCF151922B2D59000F0FC80 /* DicasViewController.swift */; };
 		2FD201E52218D17C00E0B4F2 /* TermosDeUsoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD201E42218D17C00E0B4F2 /* TermosDeUsoViewController.swift */; };
 		2FD201E72218D92500E0B4F2 /* SobreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD201E62218D92500E0B4F2 /* SobreViewController.swift */; };
 		2FD6ED4922A836C000AFEAFD /* DenunciaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6ED4822A836BF00AFEAFD /* DenunciaViewController.swift */; };
-		2FD6ED4B22A83C1E00AFEAFD /* DicasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FD6ED4A22A83C1E00AFEAFD /* DicasViewController.swift */; };
 		2FE258E922AA985200DD2B5C /* PontoDeDesordem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE258E822AA985200DD2B5C /* PontoDeDesordem.swift */; };
 		2FEE1D0821DCC36700A0D170 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEE1D0721DCC36700A0D170 /* AppDelegate.swift */; };
 		2FEE1D0A21DCC36700A0D170 /* MapaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FEE1D0921DCC36700A0D170 /* MapaViewController.swift */; };
@@ -66,10 +66,10 @@
 		2F989C8D22106409002B2965 /* Etapa3CadastroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Etapa3CadastroViewController.swift; sourceTree = "<group>"; };
 		2FC52A17229ED06F001CF4CF /* configuracaoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = configuracaoViewController.swift; sourceTree = "<group>"; };
 		2FC52A19229EEB93001CF4CF /* BarraLateralViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarraLateralViewController.swift; sourceTree = "<group>"; };
+		2FCF151922B2D59000F0FC80 /* DicasViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DicasViewController.swift; sourceTree = "<group>"; };
 		2FD201E42218D17C00E0B4F2 /* TermosDeUsoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermosDeUsoViewController.swift; sourceTree = "<group>"; };
 		2FD201E62218D92500E0B4F2 /* SobreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SobreViewController.swift; sourceTree = "<group>"; };
 		2FD6ED4822A836BF00AFEAFD /* DenunciaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DenunciaViewController.swift; sourceTree = "<group>"; };
-		2FD6ED4A22A83C1E00AFEAFD /* DicasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DicasViewController.swift; sourceTree = "<group>"; };
 		2FE258E822AA985200DD2B5C /* PontoDeDesordem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PontoDeDesordem.swift; sourceTree = "<group>"; };
 		2FEE1D0421DCC36700A0D170 /* ToDeOlho.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDeOlho.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FEE1D0721DCC36700A0D170 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -147,7 +147,8 @@
 				2FE258E822AA985200DD2B5C /* PontoDeDesordem.swift */,
 				2FEE1D0921DCC36700A0D170 /* MapaViewController.swift */,
 				2FFD4F2922A03B8C00C0EE68 /* ListaDesordensTableViewController.swift */,
-				2FD6ED4A22A83C1E00AFEAFD /* DicasViewController.swift */,
+				2FCF151922B2D59000F0FC80 /* DicasViewController.swift */,
+				2F8D8A2122ADA4F400520E72 /* DicaTableViewCell.swift */,
 				2F0F855A22A0576A00FEF2FA /* FiltrosViewController.swift */,
 				2F8C4D3622B05411009531D6 /* FiltroPkDataTableViewCell.swift */,
 				2F8C4D3822B05442009531D6 /* FiltroPkStatusTableViewCell.swift */,
@@ -157,7 +158,6 @@
 				2F22AC4C22A16C5100E3A076 /* CheckInternet.swift */,
 				2FD6ED4822A836BF00AFEAFD /* DenunciaViewController.swift */,
 				2F87C16522A2C4BC00682863 /* DenunciaTableViewCell.swift */,
-				2F8D8A2122ADA4F400520E72 /* DicaTableViewCell.swift */,
 			);
 			path = ToDeOlho;
 			sourceTree = "<group>";
@@ -342,13 +342,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FCF151A22B2D59000F0FC80 /* DicasViewController.swift in Sources */,
 				2FD6ED4922A836C000AFEAFD /* DenunciaViewController.swift in Sources */,
 				2FFD4F2A22A03B8C00C0EE68 /* ListaDesordensTableViewController.swift in Sources */,
 				2F40A92C21DCD77400468CFC /* EntrarViewController.swift in Sources */,
 				2F06824621FD17C200549268 /* Denuncia.swift in Sources */,
 				2F01AEF622A0079C00712476 /* MenuTableViewCell.swift in Sources */,
 				2FD201E52218D17C00E0B4F2 /* TermosDeUsoViewController.swift in Sources */,
-				2FD6ED4B22A83C1E00AFEAFD /* DicasViewController.swift in Sources */,
 				2F0F855B22A0576A00FEF2FA /* FiltrosViewController.swift in Sources */,
 				2FC52A1A229EEB93001CF4CF /* BarraLateralViewController.swift in Sources */,
 				2F8C4D3522B053BE009531D6 /* FiltroPkNaturezaTableViewCell.swift in Sources */,
@@ -526,7 +526,7 @@
 					"$(SRCROOT)/**",
 				);
 				INFOPLIST_FILE = ToDeOlho/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.passos.ToDeOlho;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -561,7 +561,7 @@
 					"$(SRCROOT)/**",
 				);
 				INFOPLIST_FILE = ToDeOlho/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.passos.ToDeOlho;
 				PRODUCT_NAME = "$(TARGET_NAME)";

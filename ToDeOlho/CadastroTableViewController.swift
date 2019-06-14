@@ -18,9 +18,6 @@ class CadastroTableViewController: UITableViewController {
     var pickerVisible: Bool = false
     
     @IBOutlet weak var nomeTextField: UITextField!
-    @IBOutlet weak var nascimentoLabel: UILabel!
-    
-    @IBOutlet weak var dataNascimentoDatePicker: UIDatePicker!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var senhaTextField: UITextField!
     @IBOutlet weak var senhaConfirmarTextField: UITextField!
@@ -33,7 +30,7 @@ class CadastroTableViewController: UITableViewController {
                     if senha == confirmar{
                         print("Senhas iguais!")
                         
-                        let nascimento = nascimentoLabel.text!
+                        let nascimento = ""
                         print(nascimento)
                         let nomeUsuario = self.emailTextField.text!
                         let nome = nomeTextField.text!
@@ -82,13 +79,14 @@ class CadastroTableViewController: UITableViewController {
             
         }
     }
+    /*
     @IBAction func escolherData(_ sender: Any) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
         
         let strDate = dateFormatter.string(from: dataNascimentoDatePicker.date)
         nascimentoLabel.text = strDate
-    }
+    }*/
     
     
     func exibirMensagem(titulo: String, mensagem: String) {
@@ -105,7 +103,7 @@ class CadastroTableViewController: UITableViewController {
         tap.cancelsTouchesInView = false
        view.addGestureRecognizer(tap)
         
-        nascimentoLabel.text = getToday()
+        //nascimentoLabel.text = getToday()
     }
     
     @objc func DismissKeyboard(){

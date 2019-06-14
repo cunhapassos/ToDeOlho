@@ -9,7 +9,7 @@ pod 'FBSDKLoginKit', '~> 4.39.1'
 pod 'GoogleSignIn'
 pod ‘Alamofire’
 pod 'SVProgressHUD'
-pod 'CryptoSwift'
+pod 'CryptoSwift’,  '~> 0.7.0’
 
  #pod 'TwitterKit'
 

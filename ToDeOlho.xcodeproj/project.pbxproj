@@ -526,7 +526,7 @@
 					"$(SRCROOT)/**",
 				);
 				INFOPLIST_FILE = ToDeOlho/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.passos.ToDeOlho;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -561,7 +561,7 @@
 					"$(SRCROOT)/**",
 				);
 				INFOPLIST_FILE = ToDeOlho/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.passos.ToDeOlho;
 				PRODUCT_NAME = "$(TARGET_NAME)";

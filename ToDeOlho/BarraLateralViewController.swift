@@ -29,6 +29,7 @@ class BarraLateralViewController: UIViewController, UITableViewDelegate, UITable
     var perViewController: FiltrosViewController?
     var dicViewController: DicasViewController?
     var terViewController: TermosDeUsoViewController?
+    var entViewController: EntrarViewController?
     var reference: EntrarViewController?
     
     let cellReuseIdentifier = "menuTableViewCell"
@@ -93,12 +94,17 @@ class BarraLateralViewController: UIViewController, UITableViewDelegate, UITable
         }
         else{
             //self.performSegue(withIdentifier: "login", sender: nil)
-            let controller = self.storyboard?.instantiateViewController(withIdentifier: "login") as! EntrarViewController
+
+            if (entViewController == nil){
+                self.entViewController = self.storyboard?.instantiateViewController(withIdentifier: "login") as? EntrarViewController
+            }
+            let controller: EntrarViewController = self.entViewController!
             controller.mapViewController =  self.mapViewController
             controller.storyBoard = self.storyboard
             let navController = UINavigationController(rootViewController: controller)
             navController.navigationBar.barTintColor = UIColor(red: 123, green: 22, blue: 135, alpha: 1.0)
             revealViewController().pushFrontViewController(navController, animated: true)
+            
         }
     }
     func numberOfSections(in tableView: UITableView) -> Int {

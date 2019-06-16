@@ -345,5 +345,13 @@ class MapaViewController: UIViewController, MKMapViewDelegate, CLLocationManager
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "loginSegue"){
+            let view: EntrarViewController = segue.destination as! EntrarViewController
+            view.mapViewController = self
+        }
+
+    }
+    
 }
 

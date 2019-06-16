@@ -19,7 +19,7 @@ struct URLs {
     static let denunciasPorArea = main + "api/denuncias/listadedenuncias/area/"
     
     static let tiposDesordem    = main + "api/tipodedesordem"
-    static let inserirUsuario   = main + "app/usuarios/insert"
+    static let inserirUsuario   = main + "api/usuario/inserir"
     static let inserirDenuncia  = main + "api/denuncia/inserir2"
     static let listaDenuncias   = main + ""
     

@@ -29,6 +29,20 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
     
     let socialAuth : Autenticador = Autenticador()
 
+    func validateEmail(enteredEmail:String) -> Bool {
+        
+        let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailFormat)
+        return emailPredicate.evaluate(with: enteredEmail)
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let view: CadastroTableViewController = segue.destination as! CadastroTableViewController
+        view.mapViewController = self.mapViewController
+        view.storyBoard = self.storyBoard
+        print("Segue")
+    }
     
     @IBAction func entrar(_ sender: Any) {
         
@@ -36,44 +50,50 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
         pass = pass.md5()
         print(pass)
         if (login.text!.isEmpty || senha.text!.isEmpty){
-            exibirMensagem(titulo: "", mensagem: "Preencha os campos email e senha para fazer o login")
-        }
-        let parametros: Parameters = ["email": login.text!, "password": pass]
-        
-        
-        Alamofire.request(URLs.login, method: .post, parameters: parametros).responseJSON{ response in
-            guard let json = response.result.value as? [String: Any] else{
-                print("Nao foi possivel obter o objeto de retorno como JSON from API")
-                if let error = response.result.error {
-                    print("Error: \(error)")
-                }
-                return
-            }
-            guard let retorno = json["sucesso"] as? String else{
-                print("Nao foi possivel recuperar o retorno do login")
-                return
-            }
-            print("Created retorno with id: \(retorno)")
+            exibirMensagem(titulo: "", mensagem: "Preencha os campos email e senha para fazer o login!")
+        }else{
             
-            if retorno == "true" {
-                //Persistindo dados de usuario
-                UserDefaults.standard.set(self.login.text!, forKey: "usuario")
-                UserDefaults.standard.set(self.login.text!, forKey: "nomeUsuario")
-                UserDefaults.standard.set(self.senha.text!, forKey: "senha")
-                UserDefaults.standard.set(true, forKey: "usuarioLogado")
-                
-                self.exibirMensagemLogin(titulo: "", mensagem: "Login realizado com sucesso")
-            }
-            else{
-                print("Senha ou email errado")
-                let alertController = UIAlertController(title: "Erro de login", message: "Nome de usuário ou senha errados. Por favor tente outra vez.", preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                
-                self.present(alertController, animated: true, completion: nil)
+            let email = login.text!
+            if !(validateEmail(enteredEmail: email)){
+                        self.exibirMensagem(titulo: "Formato de email incorreto", mensagem: "O formato de email está incorreto. Preencha corretamente!!")
+            } else{
+                let parametros: Parameters = ["email": email, "password": pass]
+            
+                Alamofire.request(URLs.login, method: .post, parameters: parametros).responseJSON{ response in
+                    guard let json = response.result.value as? [String: Any] else{
+                        print("Nao foi possivel obter o objeto de retorno como JSON from API")
+                        if let error = response.result.error {
+                            print("Error: \(error)")
+                        }
+                        return
+                    }
+                    guard let retorno = json["sucesso"] as? String else{
+                        print("Nao foi possivel recuperar o retorno do login")
+                        return
+                    }
+                    print("Created retorno with id: \(retorno)")
+                    
+                    if retorno == "true" {
+                        //Persistindo dados de usuario
+                        UserDefaults.standard.set(self.login.text!, forKey: "usuario")
+                        UserDefaults.standard.set(self.login.text!, forKey: "nomeUsuario")
+                        UserDefaults.standard.set(self.senha.text!, forKey: "senha")
+                        UserDefaults.standard.set(true, forKey: "usuarioLogado")
+                        
+                        self.exibirMensagemLogin(titulo: "", mensagem: "Login realizado com sucesso")
+                    }
+                    else{
+                        print("Senha ou email errado")
+                        let alertController = UIAlertController(title: "Erro de login", message: "Nome de usuário ou senha errados. Por favor tente outra vez.", preferredStyle: .alert)
+                        alertController.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                        
+                        self.present(alertController, animated: true, completion: nil)
+                    }
+                }
+
             }
         }
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -396,7 +416,7 @@ class EntrarViewController: BaseViewController, FBSDKLoginButtonDelegate, GIDSig
     
     func exibirMensagem(titulo: String, mensagem: String) {
         let alerta = UIAlertController(title: titulo, message: mensagem, preferredStyle: .alert)
-        let acaoCancelar = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        let acaoCancelar = UIAlertAction(title: "Ok", style: .default , handler: nil)
         
         alerta.addAction(acaoCancelar)
         present(alerta, animated: true, completion: nil)

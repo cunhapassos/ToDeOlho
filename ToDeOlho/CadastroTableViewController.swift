@@ -13,9 +13,10 @@ import CryptoSwift
 class CadastroTableViewController: UITableViewController {
 
     var datePickerIndexPath: IndexPath?
-    var inputTexts: [String] = ["Nascimento"]
-    var inputDates: [Date] = []
     var pickerVisible: Bool = false
+    
+    var mapViewController: MapaViewController?
+    var storyBoard: UIStoryboard?
     
     @IBOutlet weak var nomeTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
@@ -24,23 +25,28 @@ class CadastroTableViewController: UITableViewController {
     @IBOutlet weak var cadastrarButton: UIButton!
     
     @IBAction func cadastrar(_ sender: Any) {
-        if let email = self.emailTextField.text{
-            let senha = self.senhaTextField.text!.md5()
-            let confirmar = self.senhaConfirmarTextField.text!.md5()
+        let email = self.emailTextField.text!
+        if  !(email.isEmpty){
+            if validateEmail(enteredEmail: email){
+            //Fazer a verificção de se o text fild senha e confirmação foram preeenchidos
+            
+                var senha = self.senhaTextField.text!
+                var confirmar = self.senhaConfirmarTextField.text!
+                
+                if senha.isEmpty || confirmar.isEmpty{
+                   self.exibirMensagem(titulo: "Campos obrigatórios", mensagem: "Para realizar o cadastro, é obrigatório o preenchimento dos campos senha e confirmação de senha!")
+                }else{
+                    
+                    senha = senha.md5()
+                    confirmar = confirmar.md5()
+                    
                     if senha == confirmar{
                         print("Senhas iguais!")
-                        
-                        let nascimento = ""
-                        print(nascimento)
-                        let nomeUsuario = self.emailTextField.text!
+                        let login = self.emailTextField.text!
                         let nome = nomeTextField.text!
-                        let cpf = ""
-                        print(cpf)
                         let confia = 0
                         let tipo = 2
-                        let telefone = ""
-                        
-                        let parametros: Parameters = ["login": nomeUsuario, "senha": senha, "email": email, "nascimento": nascimento, "cpf": cpf,"nome": nome, "confia": confia, "tipo": tipo, "telefone": telefone]
+                        let parametros: Parameters = ["login": login, "senha": senha, "email": email, "nome": nome, "confia": confia, "tipo": tipo]
                         
                         Alamofire.request(URLs.inserirUsuario, method: .post, parameters: parametros).responseJSON{
                             response in
@@ -48,50 +54,60 @@ class CadastroTableViewController: UITableViewController {
                             print(statusCode as Any) // the status code
                             
                             print("Success: \(response.result.isSuccess)")
-                            print("Response String: \(String(describing: response.result.value))")
-   
-                            if statusCode == 200 {
-                                UserDefaults.standard.set(nomeUsuario, forKey: "usuario")
-                                UserDefaults.standard.set(email, forKey: "nomeUsuario")
-                                UserDefaults.standard.set(senha, forKey: "senha")
-                                UserDefaults.standard.set(true, forKey: "usuarioLogado")
-                                
-                                let alerta = UIAlertController(title: "Cadastro realizado", message: "Usuário cadastrado com sucesso", preferredStyle: .alert)
-                                
-                                alerta.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
-                                    //self.performSegue(withIdentifier: "retornarMapa", sender: nil)
-                                    if let navigation = self.navigationController{
-                                        navigation.popToRootViewController(animated: true)
+                            print("Response String: \(String(describing: response.result.value!))")
+                            
+                            guard let json = response.result.value as? [String: Any] else{
+                                print("Nao foi possivel obter o objeto de retorno como JSON from API")
+                                if let error = response.result.error {
+                                    print("Error: \(error)")
+                                }
+                                return
+                            }
+                            if let retorno = json["sucesso"] as? String{
+                                if  let resposta = json["resposta"] as? String{
+                                    if retorno == "true"{
+                                        UserDefaults.standard.set(login, forKey: "usuario")
+                                        UserDefaults.standard.set(email, forKey: "nomeUsuario")
+                                        UserDefaults.standard.set(senha, forKey: "senha")
+                                        UserDefaults.standard.set(true, forKey: "usuarioLogado")
+                                        
+                                        self.exibirMensagemLogin(titulo: "Parabéns!!!", mensagem: "Usuário cadastrado com sucesso")
                                     }
-                                }))
-                                self.present(alerta, animated: true, completion: nil)
-                                
+                                    
+                                    if retorno == "false" && resposta == "O email já está cadastrado"{
+                                        self.exibirMensagem(titulo: "E-mail já cadastrado", mensagem: "Tente inserir outro email, pois o \(email) já está cadastrado no sistema!")
+                                    }else{
+                                        self.exibirMensagem(titulo: "Erro no cadastro", mensagem: "Algo deu errado no cadastro do usuário, tente em instantes.")
+                                        print(resposta)
+                                    }
+                                } else{
+                                    self.exibirMensagem(titulo: "Erro", mensagem: "Erro na conexão com o servidor")
+                                    print("Nao foi possivel recuperar o retorno da resposta")
+                                }
+                            }else{
+                                self.exibirMensagem(titulo: "Erro", mensagem: "Erro na conexão com o servidor")
+                                print("Nao foi possivel recuperar o retorno do login")
                             }
-                            else{
-                                // Emitir mensagem de ERRO
-                                self.exibirMensagem(titulo: "Erro no cadastro", mensagem: "Algo deu errado no cadastro do usuário, tente em instantes.")
-                            }
+                            
+                            
+                            
                         }
                     }else{
                         self.exibirMensagem(titulo: "Dados incorretos", mensagem: "As senhas não estão iguais, digite novamente.")
                     }
-            
-            
+                }
+            }else{
+               self.exibirMensagem(titulo: "Formato de email incorreto", mensagem: "O formato de email está incorreto. Preencha corretamente!")
+            }
+        }else{
+            self.exibirMensagem(titulo: "Campo obrigatório", mensagem: "Para o cadastro, é obrigatório o preenchimento do campo email!")
         }
     }
-    /*
-    @IBAction func escolherData(_ sender: Any) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        
-        let strDate = dateFormatter.string(from: dataNascimentoDatePicker.date)
-        nascimentoLabel.text = strDate
-    }*/
     
     
     func exibirMensagem(titulo: String, mensagem: String) {
         let alerta = UIAlertController(title: titulo, message: mensagem, preferredStyle: .alert)
-        let acaoCancelar = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        let acaoCancelar = UIAlertAction(title: "ok", style: .default, handler: nil)
         
         alerta.addAction(acaoCancelar)
         present(alerta, animated: true, completion: nil)
@@ -111,12 +127,12 @@ class CadastroTableViewController: UITableViewController {
         
     }
     
-    func getToday() -> String{
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        let today = dateFormatter.string(from: Date(timeInterval: 0, since: Date()))
+    func validateEmail(enteredEmail:String) -> Bool {
         
-        return today
+        let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailFormat)
+        return emailPredicate.evaluate(with: enteredEmail)
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -142,5 +158,20 @@ class CadastroTableViewController: UITableViewController {
             }
         }
         tableView.endUpdates()
+    }
+    
+    func exibirMensagemLogin(titulo: String, mensagem: String) {
+        let alerta = UIAlertController(title: titulo, message: mensagem, preferredStyle: .alert)
+        
+        alerta.addAction(UIAlertAction(title: "Ok", style: .default, handler: { action in
+
+                let controller = self.mapViewController
+            
+            let navController = UINavigationController(rootViewController: controller!)
+            navController.navigationBar.barTintColor = UIColor(red: 123, green: 22, blue: 135, alpha: 1.0)
+            self.revealViewController().pushFrontViewController(navController, animated: true)
+
+        }))
+        self.present(alerta, animated: true, completion: nil)
     }
 }
